@@ -1,5 +1,5 @@
 {%extends "base_site.html"%}
-{% block header_tag%}
+{% block scripts%}
 {% autoescape off %}
 	<script>
 	$(document).ready(function() {
@@ -84,7 +84,7 @@
 {%endautoescape%}
 {% endblock %}
 
-{%block content %}
+{%block forms %}
 	<div style="width:100%;height:50px;">
 		<h3>Who was referred...Search: for an {%ifequal action 'another' %}Another{%endifequal%} Organization or a Person</h3>
 	</div>

@@ -1,12 +1,12 @@
 {%extends "base_site.html" %}
-{%block header_tag %}
+{%block scripts %}
 <style>
 .error {
 	color : red;
 }
 </style>
 {%endblock%}
-{%block content %}
+{%block forms %}
 <form name="post_to_facebook" method="post">{%csrf_token%}
 <div style="height:100px;width:100%">
 	<h3>Post to Twitter</h3>
