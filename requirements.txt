@@ -1,0 +1,17 @@
+django==1.4.2
+psycopg2
+django-celery
+setuptools-git
+python-dateutil==2.1
+mock
+django-social-auth
+django_openid_auth
+south
+simplejson
+httplib2
+oauth2
+python-twitter
+django-paypal
+django-postman
+django-pagination
+

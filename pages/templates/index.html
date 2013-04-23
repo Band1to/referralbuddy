@@ -1,0 +1,54 @@
+{%extends "base_site.html" %}
+    {%block scripts%}
+  	<link href="{{STATIC_URL}}css/index.css" rel="stylesheet">  
+    {%endblock%}
+	{%block logo%}
+	    <div id="notification">
+			<!--logo left-->
+			<div style="float:left">
+				<a href="/" title="Logo of ReferralBuddy" id="logo">
+					<img src="{{STATIC_URL}}/img/Logo.png" alt="logo" />
+				</a>
+			</div>
+			<!--dynamic text-->
+			<div class="testimonial">
+			<div class="left-quote">&nbsp;</div>
+			<div class="testi-text" style="float:left">
+				{{content.top_content}} 
+			</div>
+
+		</div>
+	</div>
+	{%endblock%}
+		{%block left%}
+			<div id="youtube">
+				<iframe width="430" height="280" src="http://www.youtube.com/embed/23i-BvSZqzU" frameborder="0" allowfullscreen></iframe>
+			</div>
+		
+		{%endblock%}
+		{%block right%}
+		<form method="post">
+					<div><h3>Easy Subscription</h3></div>
+					<div><input type="text" name="email" placeholder="Email Address"/></div>
+					<div><input type="text" name="first_name" placeholder="First Name"/></div>
+					<div><input type="text" name="last_name" placeholder="Last Name"/></div>
+					<div style="overflow:auto">
+						<div style="float:left" class="icons">
+							<a href="{%url socialauth_begin 'facebook'%}" title="Facebook Social Login">
+								<img src="{{STATIC_URL}}/img/icon-fb.png" alt="logo" />
+							</a>
+						</div>
+						<div style="float:left" class="icons">
+							<a href="{%url socialauth_begin 'twitter'%}" title="Twitter Login">
+								<img src="{{STATIC_URL}}/img/icon-twitter.png" alt="logo" />
+							</a>
+						</div>
+						<div style="float:left"class="icons">
+							<a href="{%url socialauth_begin 'google'%}" title="Google Plus Loging">
+								<img src="{{STATIC_URL}}/img/icon-gplus.png" alt="logo" />
+							</a>
+						</div>
+					</div>
+					<div><input type="submit" class="btn btn-success" /></div>
+				</form>
+		{%endblock%}

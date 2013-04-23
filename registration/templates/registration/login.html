@@ -1,0 +1,52 @@
+{%extends "base_site.html"%}
+
+{% block title %}Log In{% endblock %}
+
+{%block scripts %}
+<style>
+.error, .errorlist li {
+	color: red;
+}
+</style>
+{%endblock%}
+{%block left%}
+
+{% if form.errors %}
+<p class="error">Please correct the errors below:</p>
+{% endif %}
+
+
+<p>
+	{{form.non_field_errors}}
+</p>
+
+
+
+<form method="post" >
+
+<div class="frm_err">{% if form.username.errors %} <span class="error">{{ form.username.errors|join:", " }}</span>{% endif %}</div>
+<div class="frm_cont">
+	<div class="frm_label">
+		<label for="id_username" style="width:100%;">Email:</label>
+	</div>
+	<div class="frm_field">{{ form.username }}</div>
+</div>
+
+<div class="frm_err">{% if form.password.errors %} <span class="error">{{ form.password.errors|join:", " }}</span>{% endif %}</div>
+<div class="frm_cont">
+	<div class="frm_label">
+		<label for="id_password" style="width:100%;">Password:</label>
+	</div>
+	<div class="frm_field">{{ form.password }}</div>
+</div>
+
+<div>
+	<div>
+		{%csrf_token%}
+		<input type="submit" value="Log In" />
+	</div>
+</div>
+</form>
+
+
+{%endblock%}
