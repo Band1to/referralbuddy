@@ -2,7 +2,7 @@ var nationwide = nationwide || {};
 nationwide.utils = nationwide.utils || {};
 
 
-function show_errors($profile_form) {
+function show_errors($profile_form, json) {
 	//clear all existing errors:
         				var $inputs = $profile_form.find("input[type=text]");
         				var $selects = $profile_form.find("select");
@@ -107,7 +107,7 @@ $(function(){
         			json = json[0];
         			if (json.status == 500) {
         				alert('error');
-        				show_errors($profile_form);
+        				show_errors($profile_form, json);
         			} else {
         				//
         				alert('go to next page');
@@ -141,7 +141,7 @@ $(function(){
         			$("#screen").css('display', 'none');
         			json = json[0];
         			if (json.status == 500) {
-        				show_errors($profile_form);
+        				show_errors($profile_form, json);
         			} else {
         				$paypal_form.submit();
         			}
