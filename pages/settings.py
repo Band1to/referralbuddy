@@ -204,4 +204,4 @@ PAYPAL_ITEM_NAME = "Nationwide Finance"
 
 AUTH_PROFILE_MODULE = 'referrals.EntityProfile'
 
-LOGIN_REDIRECT_URL = '/referrals/referrals/'
+LOGIN_REDIRECT_URL = '/'
