@@ -182,8 +182,9 @@ ACCOUNT_ACTIVATION_DAYS = 7
 
 BROKER_URL = 'django://'
 
-import socket
-HOSTNAME = socket.gethostname()
+from django.contrib.sites.models import Site
+
+HOSTNAME = Site.objects.get_current()
 
 PAYPAL_RECEIVER_EMAIL = "seller_1355087471_biz@webiken.net"
 
