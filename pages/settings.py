@@ -202,3 +202,5 @@ PAYPAL_RETURN_URL = "http://%s:8000/referrals/nationwide_paypal_return" % HOSTNA
 PAYPAL_TEST = True
 
 PAYPAL_ITEM_NAME = "Nationwide Finance"
+
+AUTH_PROFILE_MODULE = 'referrals.EntityProfile'
