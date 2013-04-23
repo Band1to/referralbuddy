@@ -193,9 +193,9 @@ PAYPAL_CC_IMAGE = "https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif"
 
 PAYPAL_ACTION_URL = "https://www.sandbox.paypal.com/cgi-bin/webscr"
 
-PAYPAL_NOTIFY_URL = "http://%s:8000/referrals/nationwide_paypal_ipn" % HOSTNAME
+PAYPAL_NOTIFY_URL = "http://%s/referrals/nationwide_paypal_ipn" % HOSTNAME
 
-PAYPAL_CANCEL_RETURN_URL = "http://%s:8000/referrals/nationwdide_paypal_cancel" % HOSTNAME
+PAYPAL_CANCEL_RETURN_URL = "http://%s/referrals/nationwdide_paypal_cancel" % HOSTNAME
 
 PAYPAL_RETURN_URL = "http://%s:8000/referrals/nationwide_paypal_return" % HOSTNAME
 
