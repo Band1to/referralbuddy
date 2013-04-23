@@ -182,9 +182,7 @@ ACCOUNT_ACTIVATION_DAYS = 7
 
 BROKER_URL = 'django://'
 
-from django.contrib.sites.models import Site
-
-HOSTNAME = Site.objects.get_current()
+HOSNAME = "maximus.webiken.net"
 
 PAYPAL_RECEIVER_EMAIL = "seller_1355087471_biz@webiken.net"
 
@@ -198,7 +196,7 @@ PAYPAL_NOTIFY_URL = "http://%s/referrals/nationwide_paypal_ipn" % HOSTNAME
 
 PAYPAL_CANCEL_RETURN_URL = "http://%s/referrals/nationwdide_paypal_cancel" % HOSTNAME
 
-PAYPAL_RETURN_URL = "http://%s:8000/referrals/nationwide_paypal_return" % HOSTNAME
+PAYPAL_RETURN_URL = "http://%s/referrals/nationwide_paypal_return" % HOSTNAME
 
 PAYPAL_TEST = True
 
