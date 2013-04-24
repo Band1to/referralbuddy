@@ -1,5 +1,13 @@
 [
   {
+    "model": "sites.site",
+    "pk": 1,
+    "fields": {
+      "name": "ReferralBuddy.com",
+      "domain" : "maximus.webiken.net"
+    }
+  },
+  {
     "model": "referrals.country",
     "pk": 1,
     "fields": {
