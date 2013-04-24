@@ -42,6 +42,7 @@
 		<div class="container">
 			<div class="page-header">
 				<ul id="menu">
+					{%if user.is_authenticated%}<li><a>Welcome {{user.first_name}}!</a></li>{%endif%}
 					<li>
 						<a href="{%url home%}">Home</a><!-- Begin Packages Item -->				
 					</li>
@@ -77,24 +78,23 @@
 								<li><a href="#">sub_indi4</a></li>
 							</ul><!-- Begin 5 columns Item -->
 					</li><!-- End 5 columns Item -->
+					{%if user.is_authenticated%}
 					<li style="float:right;">
-						{%if user.is_authenticated%}
-							<span>Welcome {{user.first_name}}!</span>
-								<li>
-									<a href="#">Settings</a>
-									<ul class="submenu">
-										<li>
-											<a href="{% url edit_profile%}">Edit Profile</a>
-										</li>
-										<li>
-											<a href="{% url auth_logout%}">Logout</a>
-										</li>	
-									</ul>
-								</li>
-						{%else%}
-							<a href="{% url auth_login%}">Login</a>
-						{%endif%}
+						<a href="#">Settings</a>
+						<ul class="submenu" style="width:118px;border-radius:0px 0px 0px 0px">
+							<li>
+								<a href="{% url edit_profile%}">Edit Profile</a>
+							</li>
+							<li>
+								<a href="{% url auth_logout%}">Logout</a>
+							</li>	
+						</ul>
 					</li>
+					{%else%}
+					<li style="float:right;">
+							<a href="{% url auth_login%}">Login</a>
+					</li>
+					{%endif%}
 				</ul>
 
 				<br>

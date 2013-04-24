@@ -182,7 +182,7 @@ ACCOUNT_ACTIVATION_DAYS = 7
 
 BROKER_URL = 'django://'
 
-HOSNAME = "maximus.webiken.net"
+HOSTNAME = "maximus.webiken.net"
 
 PAYPAL_RECEIVER_EMAIL = "seller_1355087471_biz@webiken.net"
 
