@@ -27,28 +27,45 @@
 		
 		{%endblock%}
 		{%block right%}
-		<form method="post">
-					<div><h3>Easy Subscription</h3></div>
-					<div><input type="text" name="email" placeholder="Email Address"/></div>
-					<div><input type="text" name="first_name" placeholder="First Name"/></div>
-					<div><input type="text" name="last_name" placeholder="Last Name"/></div>
-					<div style="overflow:auto">
-						<div style="float:left" class="icons">
-							<a href="{%url socialauth_begin 'facebook'%}" title="Facebook Social Login">
-								<img src="{{STATIC_URL}}/img/icon-fb.png" alt="logo" />
-							</a>
-						</div>
-						<div style="float:left" class="icons">
-							<a href="{%url socialauth_begin 'twitter'%}" title="Twitter Login">
-								<img src="{{STATIC_URL}}/img/icon-twitter.png" alt="logo" />
-							</a>
-						</div>
-						<div style="float:left"class="icons">
-							<a href="{%url socialauth_begin 'google'%}" title="Google Plus Loging">
-								<img src="{{STATIC_URL}}/img/icon-gplus.png" alt="logo" />
-							</a>
-						</div>
-					</div>
-					<div><input type="submit" class="btn btn-success" /></div>
-				</form>
+				<div><h3>Easy Subscription</h3></div>
+
+				<div class="frm_err">{% if form.username.errors %} <span class="error">{{ form.username.errors|join:", " }}</span>{% endif %}</div>
+				<div class="frm_cont">
+						<div class="frm_label"><label for="id_username" style="width:100%;">Username:</label></div>
+						<div class="frm_field">{{ form.username }}</div>
+				</div>
+				<div class="frm_err">{% if form.email.errors %} <span class="error">{{ form.email.errors|join:", " }}</span>{% endif %}</div>
+<div class="frm_cont">
+	<div class="frm_label">
+		<label for="id_email">Email address:</label>
+	</div>
+	<div class="frm_label">{{ form.email }}</div>
+	
+</div>
+
+<div class="frm_err">{% if form.password1.errors %} <span class="error">{{ form.password2.errors|join:", " }}</span>{% endif %}</div>
+<div class="frm_cont">
+	<div class="frm_label">
+		<label for="id_password1">Password:</label>
+	</div>
+	<div class="frm_label">{{ form.password1 }}</div>
+	
+</div>
+
+<div class="frm_err">{% if form.password2.errors %} <span class="error">{{ form.password2.errors|join:", " }}</span>{% endif %}</div>
+<div class="frm_cont">
+	<div class="frm_label">
+		<label for="id_password2">Password <br/>(type again to catch any typos):</label>
+	</div>
+	<div class="frm_label">{{ form.password2 }}</div>
+</div>
+<div>
+	<div>
+		{%csrf_token%}
+		<input type="submit" value="Register" class="btn btn-success" />
+	</div>
+</div>
+
+</form>
+				
 		{%endblock%}
