@@ -43,6 +43,9 @@
 			<div class="page-header">
 				<ul id="menu">
 					<li>
+						<a href="{%url home%}">home</a><!-- Begin Packages Item -->				
+					</li>
+					<li>
 						<a href="#">Packages</a><!-- Begin Packages Item -->				
 					</li><!-- End Packages Item -->
 					<li>
@@ -54,10 +57,14 @@
 					<li>
 						<a href="#">Organization</a><!-- Begin 5 columns Item -->
 						<ul class="submenu">
-								<li><a href="#">submenu1</a></li>
-								<li><a href="#">submenu2</a></li>
-								<li><a href="#">submenu3</a></li>
-								<li><a href="#">submenu4</a></li>
+								<li><a href="{% url add_referral %}">Add Referral</a></li>
+								<li><a href="{% url search_referrers %}">Search Referrers</a></li>
+								<li><a href="{% url view_referrers %}">View Referrers</a></li>
+								<li><a href="{% url calculate_gifts %}">Send Gifts</a></li>
+								<li><a href="{% url send_message %}">Send Message</a></li>
+								<li><a href="{% url postman_inbox %}">View Inbox</a></li>
+								<li><a href="{% url postman_sent %}">View Outbox</a></li>
+								<li><a href="{% url search_organization %}">Organization</a></li>
 						</ul>
 
 					</li><!-- End 5 columns Item -->
