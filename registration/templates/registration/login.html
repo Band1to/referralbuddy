@@ -27,7 +27,7 @@
 <div class="frm_err">{% if form.username.errors %} <span class="error">{{ form.username.errors|join:", " }}</span>{% endif %}</div>
 <div class="frm_cont">
 	<div class="frm_label">
-		<label for="id_username" style="width:100%;">Email:</label>
+		<label for="id_username" style="width:100%;">Email or Username:</label>
 	</div>
 	<div class="frm_field">{{ form.username }}</div>
 </div>
@@ -43,7 +43,7 @@
 <div>
 	<div>
 		{%csrf_token%}
-		<input type="submit" value="Log In" />
+		<input type="submit" value="Log In" class="btn btn-success" />
 	</div>
 </div>
 </form>
