@@ -27,45 +27,35 @@
 		
 		{%endblock%}
 		{%block right%}
+			<form method="post" action="{%url registration_register%}">
 				<div><h3>Easy Subscription</h3></div>
-
-				<div class="frm_err">{% if form.username.errors %} <span class="error">{{ form.username.errors|join:", " }}</span>{% endif %}</div>
 				<div class="frm_cont">
 						<div class="frm_label"><label for="id_username" style="width:100%;">Username:</label></div>
 						<div class="frm_field">{{ form.username }}</div>
 				</div>
-				<div class="frm_err">{% if form.email.errors %} <span class="error">{{ form.email.errors|join:", " }}</span>{% endif %}</div>
-<div class="frm_cont">
-	<div class="frm_label">
-		<label for="id_email">Email address:</label>
-	</div>
-	<div class="frm_label">{{ form.email }}</div>
-	
-</div>
-
-<div class="frm_err">{% if form.password1.errors %} <span class="error">{{ form.password2.errors|join:", " }}</span>{% endif %}</div>
-<div class="frm_cont">
-	<div class="frm_label">
-		<label for="id_password1">Password:</label>
-	</div>
-	<div class="frm_label">{{ form.password1 }}</div>
-	
-</div>
-
-<div class="frm_err">{% if form.password2.errors %} <span class="error">{{ form.password2.errors|join:", " }}</span>{% endif %}</div>
-<div class="frm_cont">
-	<div class="frm_label">
-		<label for="id_password2">Password <br/>(type again to catch any typos):</label>
-	</div>
-	<div class="frm_label">{{ form.password2 }}</div>
-</div>
-<div>
-	<div>
-		{%csrf_token%}
-		<input type="submit" value="Register" class="btn btn-success" />
-	</div>
-</div>
-
-</form>
+				<div class="frm_cont">
+					<div class="frm_label">
+						<label for="id_email">Email address:</label>
+					</div>
+					<div class="frm_label">{{ form.email }}</div>	
+				</div>
+				<div class="frm_cont">
+					<div class="frm_label">
+						<label for="id_password1">Password:</label>
+					</div>
+					<div class="frm_label">{{ form.password1 }}</div>	
+					</div>
+				<div class="frm_cont">
+					<div class="frm_label">
+						<label for="id_password2">Password <br/>(type again to catch any typos):</label>
+					</div>
+					<div class="frm_label">{{ form.password2 }}</div>
+					</div>
+				<div>
+				<div>
+					{%csrf_token%}
+					<input type="submit" value="Register" class="btn btn-success" />
+				</div>
+			</form>
 				
 		{%endblock%}

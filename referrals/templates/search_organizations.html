@@ -25,6 +25,7 @@
 						var id = aData[0];
 						var $elm = $("<button>",{html : "Send Message"});
 						$elm.attr('id',id);
+						$elm.attr('class', 'btn');
 						$elm.on('click', function(){
 							window.location.href = '/referrals/send_message?org_id=' + $(this).attr('id');
 						});
@@ -63,11 +64,11 @@
 		<div style="float:left;width:20%;padding-left:20px;"><input type="text" name="industry"/></div>
 	</div>
 	<div style="width:50%;height:50px;text-align:center;" id="submit_btn">
-		<input type="submit" value="Search"/>
+		<input type="submit" value="Search" class="btn btn-success"/>
 	</div>
 </form>
 <div style="width:90%;margin-left:50px;">
-	<table id="results"></table>
+	<table id="results" style="width:100%"></table>
 </div>
 {%if not results %}
 	{%ifequal request.method "POST" %}

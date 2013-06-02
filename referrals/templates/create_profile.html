@@ -132,7 +132,7 @@
 				<div>{% if form.country.errors %} <span class="error">{{ form.country.errors|join:", " }}</span>{% endif %}</div>
 			</div>
 		</div>
-		<div id="profile_btn" style="width:50%;height:50px;text-align:center;display:none;">
+		<div id="profile_btn" style="width:50%;height:50px;text-align:center;{%if user.get_profile%}display:block{%else%}display:none;{%endif%}">
 			{{form.referrals_made}}
 			<input id="update_profile" type="submit" value="Update Profile" class="btn btn-success"/>
 		</div>
@@ -146,7 +146,7 @@
 </div>
 <script>
 $(function(){
-	{%if "edit_profile" in request.path%}
+	{%if editing%}
 		$("#profile_btn").css('display', 'block');
 		$("#paypal_btn").css('display', 'none');
 	{%endif%}

@@ -69,7 +69,7 @@ def get_plan_price(request):
         return HttpResponse(simplejson.dumps([dict(status = 200, price = plan.price, name = plan.plan_name)]),content_type = 'application/javascript')
     return HttpResponse(simplejson.dumps([dict(status = 500)]),content_type = 'application/javascript')
     
-
+@login_required
 def create_profile(request,template='create_profile.html'):
     from referrals import forms
     
@@ -115,12 +115,14 @@ def create_profile(request,template='create_profile.html'):
 def nationwide_paypal_return(request):
     return HttpResponseRedirect('/')
 
+@login_required
 def edit_profile(request, template='create_profile.html'):
     from referrals import forms
 
+    editing = True
+
     if request.method == 'GET':
         form = forms.CreateProfileForm(instance=request.user.get_profile())
-        
     else:
         form = forms.CreateProfileForm(data=request.POST, instance=request.user.get_profile())
 
@@ -132,10 +134,11 @@ def edit_profile(request, template='create_profile.html'):
                               dict(
                                     title='Creating a Profile',
                                     form = form,
+                                    editing = editing,
                                     #form1 = form1
                                     ),
                               context_instance=RequestContext(request))
-
+@login_required
 def add_referral(request):
 
     from referrals import forms
@@ -228,6 +231,7 @@ def add_referral(request):
                     form2 = form2),
                 context_instance=RequestContext(request))
 
+@login_required
 def calculate_gifts(request, template='calcluate_gifts_wait.html'):
     
     task = CalculateGifts.delay(request.user)
@@ -267,6 +271,7 @@ def referrer_first_login(request):
                 dict(title='First Login',form = form),
                 context_instance=RequestContext(request))
 
+@login_required
 def view_referrers(request):
     referrals = models.EntityReferral.objects.filter(organization__email=request.user.email)
 
@@ -288,6 +293,7 @@ def view_referrers(request):
             dict(title='Viewing Referrers',aaData = aaData),
             context_instance=RequestContext(request))
 
+@login_required
 def view_referred(request):
 
     referrals = models.EntityReferral.objects.filter(referrer__email=request.user.email)
@@ -319,6 +325,7 @@ def add_referral_autocomplete(request):
         return HttpResponse(simplejson.dumps(result))
     return HttpResponse(simplejson.dumps([dict(status = 500)]))
 
+@login_required
 def post_to_facebook(request):
     from referrals import forms
 
@@ -369,6 +376,7 @@ def post_to_facebook(request):
             dict(title='Posting to Facebook',form=form),
             context_instance=RequestContext(request))
 
+@login_required
 def post_to_twitter(request):
     from referrals import forms
 

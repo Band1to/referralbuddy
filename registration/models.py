@@ -102,7 +102,7 @@ class RegistrationManager(models.Manager):
                                        { 'activation_key': registration_profile.activation_key,
                                          'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                                          'site': current_site,
-                                         'site_url': 'http://%s' % site.domain })
+                                         'site_url': 'http://%s' % current_site.domain })
             
             from mailer import send_email as send_mail
             send_mail(subject=subject, body=message, to_email=[new_user.email])

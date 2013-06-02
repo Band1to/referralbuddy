@@ -21,7 +21,7 @@
 
 		<div style="width:100%;height:50px;">
 			<div style="float:left;width:20%;text-align:right;text-align:right;">Organizaton:</div>
-			<div style="float:left;width:20%;padding-left:20px;">
+			<div style="float:left;width:30%;padding-left:20px;">
 				<div style="display:none;">{{form.recipients}}</div>
 				<input type="text" name="business_name" value="{{org.business_name}}"/>
 				<input type="hidden" name="moderation_status" value="a"/>
@@ -43,7 +43,7 @@
 		</div>
 		{% if not saved %}
 			<div style="width:50%;height:50px;text-align:center;" >
-				<input type="submit" value="Send Message"/>
+				<input type="submit" value="Send Message" class="btn btn-success"/>
 			</div>
 		{%else%}
 			<div style="width:50%;height:50px;text-align:center;" >

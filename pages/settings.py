@@ -1,7 +1,6 @@
 # Django settings for referralbody project.
 import os
 
-from local_settings import *
 
 DEBUG = True
 
@@ -85,6 +84,20 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.contrib.messages.context_processors.messages',
+    'social_auth.context_processors.social_auth_by_type_backends',
+    'django.core.context_processors.request',
+    'django.core.context_processors.static',
+    'referrals.context_processors.paypal_button_image',
+    'referrals.context_processors.paypal_cc_image',
+    'referrals.context_processors.paypal_action_url',
 )
 
 ROOT_URLCONF = 'pages.urls'
@@ -182,7 +195,7 @@ ACCOUNT_ACTIVATION_DAYS = 7
 
 BROKER_URL = 'django://'
 
-HOSTNAME = "maximus.webiken.net"
+HOSTNAME = "referralbuddy.com.au"
 
 PAYPAL_RECEIVER_EMAIL = "seller_1355087471_biz@webiken.net"
 
@@ -205,3 +218,10 @@ PAYPAL_ITEM_NAME = "Nationwide Finance"
 AUTH_PROFILE_MODULE = 'referrals.EntityProfile'
 
 LOGIN_REDIRECT_URL = '/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+try:
+    from local_settings import *
+except ImportError, e:
+    pass
