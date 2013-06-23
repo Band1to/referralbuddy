@@ -10,7 +10,7 @@ def send_email(subject=None, body=None, to_email=None, fail_silently=False):
     params = dict(
         subject = subject,
         body = body,
-        from_email = 'admin@webiken.net',
+        from_email = 'info@referralbuddy.com.au',
         to = to_email,
     )
     try:
