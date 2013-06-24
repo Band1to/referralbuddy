@@ -14,4 +14,6 @@ python-twitter
 django-paypal
 django-postman
 django-pagination
+django-tinymce
+django-staticfiles
 

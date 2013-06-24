@@ -144,6 +144,7 @@ INSTALLED_APPS = (
     'djcelery',
     'kombu.transport.django',
     'paypal.standard.ipn',
+    'tinymce',
     'postman',
     'pagination',
     ###LOCAL APPS
@@ -214,6 +215,17 @@ AUTH_PROFILE_MODULE = 'referrals.EntityProfile'
 LOGIN_REDIRECT_URL = reverse_lazy('home')
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+TINYMCE_DEFAULT_CONFIG = {
+    'plugins': "table,spellchecker,paste,searchreplace",
+    'theme': "advanced",
+    'theme_advanced_buttons3_add' : "forecolor,backcolor, textcolor",
+    'theme_advanced_toolbar_location' : "top",
+    'theme_advanced_toolbar_align' : "left",
+    'theme_advanced_statusbar_location' : "bottom",
+    'theme_advanced_resizing' : True,
+    'convert_urls' : False
+}
 
 try:
     from local_settings import *

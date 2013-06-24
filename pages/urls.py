@@ -35,4 +35,6 @@ urlpatterns = patterns('pages.views',
     
     ###POSTMAN
     url(r'^messages/', include('postman.urls')),
+
+    (r'^tinymce/', include('tinymce.urls')),
 )

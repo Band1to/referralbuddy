@@ -1,7 +1,10 @@
 # Create your models here.
-from django.db import models
 import datetime
+
+from django.db import models
 from django.utils import timezone
+
+from tinymce.models import HTMLField
 
 
 class Page(models.Model):
@@ -21,9 +24,9 @@ class Page(models.Model):
 
 class PageContent(models.Model):
     page = models.ForeignKey(Page)
-    top_content = models.CharField(max_length=500, null=True, blank=True)
-    left_content = models.CharField(max_length=500, null=True, blank=True)
-    right_content = models.CharField(max_length=500, null=True, blank=True)
+    top_content = HTMLField(max_length=500, null=True, blank=True)
+    left_content = HTMLField(max_length=500, null=True, blank=True)
+    right_content = HTMLField(max_length=500, null=True, blank=True)
     is_active = models.BooleanField(default=False)
 
 
