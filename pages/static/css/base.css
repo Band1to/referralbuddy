@@ -421,3 +421,20 @@ background:#ffffff;
 border:1px solid #aaaaaa;
 padding:4px 6px 4px 6px;
 margin:0px 0px 4px 0px;
+}
+
+.loginlink {
+    text-align: left !important;
+}
+
+#loginmenu {
+    margin-left:0px !important;
+    border-top-right-radius:none;
+    margin-right: -20px !important;
+    width:90px;
+
+}
+
+.loginbtn {
+    padding-left: 20px;
+}

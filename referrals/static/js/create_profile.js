@@ -87,7 +87,7 @@ $(function(){
 	nationwide.utils.entity_selector_helper($("select[name=entity_type]"));
 
 	$("#update_profile").on('click', function(){
-		alert("test");
+		
 		var frm_selector = "form[name=frm_create_profile]";
 		var $profile_form = $(frm_selector);
 
@@ -110,7 +110,7 @@ $(function(){
         				show_errors($profile_form, json);
         			} else {
         				//
-        				alert('go to next page');
+        				
         			}
         			
     	   		}

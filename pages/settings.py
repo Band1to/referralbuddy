@@ -1,6 +1,6 @@
-# Django settings for referralbody project.
+# Django settings for referralbuddy project.
 import os
-
+from django.core.urlresolvers import reverse_lazy
 
 DEBUG = True
 
@@ -82,6 +82,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'middleware.checkprofile.CheckProfileMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -183,13 +184,6 @@ LOGGING = {
 
 
 
-FACEBOOK_APP_ID                   = '361510763943252'
-FACEBOOK_API_SECRET               = '2f02398f50a91ac1aea21676a098c53b'
-FACEBOOK_EXTENDED_PERMISSIONS     = ['email', 'publish_stream']
-
-TWITTER_CONSUMER_KEY              = 'brWqfOYENR4q5VMGSTw'
-TWITTER_CONSUMER_SECRET           = 'eVqv0sxKta5bgbitKAGpiBnm9XCLGS0mCJSggB3GYJI'
-
 ACCOUNT_ACTIVATION_DAYS = 7
 
 
@@ -217,7 +211,7 @@ PAYPAL_ITEM_NAME = "Nationwide Finance"
 
 AUTH_PROFILE_MODULE = 'referrals.EntityProfile'
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = reverse_lazy('add_referral')
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
