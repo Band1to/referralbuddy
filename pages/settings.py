@@ -7,7 +7,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    
 )
 
 MANAGERS = ADMINS
@@ -226,6 +226,22 @@ TINYMCE_DEFAULT_CONFIG = {
     'theme_advanced_resizing' : True,
     'convert_urls' : False
 }
+
+SITE_EMAIL_ADDRESS = 'info@referralbuddy.com.au'
+
+SITE_ADMIN_NAME = 'Referral Buddy'
+
+NO_REPLY_EMAIL = 'noreply@referralbuddy.com.au'
+
+NO_REPLY_NAME = 'Do Not Reply'
+
+ELASIC_EMAIL_API_SERVER = 'api.elasticemail.com'
+
+ELASTIC_EMAIL_API_URL = '/mailer/send'
+
+ELASTIC_EMAIL_SUCCESS_MATCH_PATTERN = '^[0-9|a-f]{8}-[0-9|a-f]{4}-[0-9|a-f]{4}-[0-9|a-f]{4}-[0-9|a-f]{12}$' 
+
+ELASTIC_EMAIL_ERROR_MATCH_PATTERN = '^Error:'
 
 try:
     from local_settings import *
