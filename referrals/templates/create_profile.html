@@ -19,7 +19,7 @@
 		<form method="post" name="frm_create_profile" id="frm_create_profile">
 			{%csrf_token%}
 			<div style="width:100%;height:50px;">
-				<h4>Please create a profile to continue using the site</h4>
+				<h3>Please complete the form to {%if editing%} update your profile{%else%} create a profile to continue using the site{%endif%}</h3>
 			</div>
 			<div style="width:100%;height:50px;">
 				<div style="float:left;width:20%;text-align:right;text-align:right;">Select Type:</div>

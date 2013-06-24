@@ -55,6 +55,7 @@
 					<li>
 						<a href="{% url support %}">Support</a><!-- Begin 5 columns Item (the 'quotes for django 1.5')-->
 					</li><!-- End 5 columns Item -->
+					{%if user.is_authenticated and user.get_profile.is_organization%}
 					<li>
 						<a href="#">Organization</a><!-- Begin 5 columns Item -->
 						<ul class="submenu">
@@ -69,16 +70,19 @@
 						</ul>
 
 					</li><!-- End 5 columns Item -->
+					{%endif%}
+					{%if user.is_authenticated and not user.get_profile.is_organization%}
 					<li>
 						<a href="#">Individuals</a>
 							<ul class="submenu" style="width:125px;height:30px;">
 								<li><a href="{% url view_referred %}">View Referred</a></li>
 							</ul><!-- Begin 5 columns Item -->
 					</li><!-- End 5 columns Item -->
+					{%endif%}
 					{%if user.is_authenticated%}
 					<li style="float:right;">
 						<a href="#">Settings</a>
-						<ul class="submenu" style="width:118px;border-radius:0px 0px 0px 0px">
+						<ul class="submenu" style="width:118px;border-radius:0px 0px 0px 0px;margin-left:-11px;">
 							<li>
 								<a href="{% url edit_profile%}">Edit Profile</a>
 							</li>

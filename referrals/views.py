@@ -123,21 +123,23 @@ def edit_profile(request, template='create_profile.html'):
 
     if request.method == 'GET':
         form = forms.CreateProfileForm(instance=request.user.get_profile())
+        return render_to_response(template,
+                              dict(
+                                    title ='Updating your Profile',
+                                    form  = form,
+                                    editing = editing,
+                                ),
+                              context_instance=RequestContext(request))
     else:
         form = forms.CreateProfileForm(data=request.POST, instance=request.user.get_profile())
 
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/')
+            return HttpResponse(simplejson.dumps([dict(status = 200)]),content_type = 'application/javascript')
 
-    return render_to_response(template,
-                              dict(
-                                    title='Creating a Profile',
-                                    form = form,
-                                    editing = editing,
-                                    #form1 = form1
-                                    ),
-                              context_instance=RequestContext(request))
+        else:
+            return HttpResponse(simplejson.dumps([dict(status = 500)]),content_type = 'application/javascript')
+
 @login_required
 def add_referral(request):
 

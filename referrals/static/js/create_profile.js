@@ -110,7 +110,8 @@ $(function(){
         				show_errors($profile_form, json);
         			} else {
         				//
-        				
+        				window.location.href = '/';
+                        
         			}
         			
     	   		}

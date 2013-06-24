@@ -211,7 +211,7 @@ PAYPAL_ITEM_NAME = "Nationwide Finance"
 
 AUTH_PROFILE_MODULE = 'referrals.EntityProfile'
 
-LOGIN_REDIRECT_URL = reverse_lazy('add_referral')
+LOGIN_REDIRECT_URL = reverse_lazy('home')
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

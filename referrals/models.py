@@ -151,6 +151,9 @@ class EntityProfile(models.Model):
 		except UserSocialAuth.DoesNotExist:
 			return False
 
+	def is_organization(self):
+		return self.entity_type == 'org'
+
 	def __unicode__(self):
 		if self.entity_type == 'org':
 			return self.business_name

@@ -27,6 +27,7 @@
 		
 		{%endblock%}
 		{%block right%}
+			{%if not user.is_authenticated%}
 			<form method="post" action="{%url registration_register%}">
 				<div><h3>Easy Subscription</h3></div>
 				<div class="frm_cont">
@@ -57,5 +58,15 @@
 					<input type="submit" value="Register" class="btn btn-success" />
 				</div>
 			</form>
+			{%else%}
+				<div>
+					{%if user.get_profile.is_organization%}
+						<h3>Welcome {{user.first_name}}!  Click <a href="{%url add_referral%}">here</a> to add a referral</h3>
+					{%else%}
+						<h3>Welcome {{user.first_name}}!  Click <a href="{%url view_referred%}">here</a> to view refered</h3>
+					{%endif%}
+					</div>
+
+			{%endif%}
 				
 		{%endblock%}
