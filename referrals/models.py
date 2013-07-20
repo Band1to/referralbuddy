@@ -88,7 +88,7 @@ class EntityPlan(models.Model):
 	entity_active = models.BooleanField()
 
 	def __unicode__(self):
-		return self.plan_name
+		return "%s %s" % (self.plan_name, self.price)
 
 	class Meta:
 		verbose_name_plural = "Entity Plans"
