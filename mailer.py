@@ -8,8 +8,10 @@ from django.template import Context
 from django.core import mail
 from django.conf import settings
 
+import utils
+
 import logging
-log = loggin.getLogger(__file__)
+log = logging.getLogger(__file__)
 
 
 # def send_email(subject=None, body=None, to_email=None, fail_silently=False):
@@ -49,24 +51,9 @@ def send_email(template=None, subject=None, to_email=None):
     msg_info['reply_to_name'] = settings.NO_REPLY_NAME 
     msg_info['channel'] = 'Channel Name'
 
-    data = urllib.urlencode(msg_info)
+    log.warn("sending email to %s" % to_email)
 
-    # raise RuntimeError(msg_info)
-    headers = {'Content-type': 'application/x-www-form-urlencoded', 'Accept': 'text/plain'} 
-
-    try: 
-        # Connect to the API and send the message 
-        conn = httplib.HTTPSConnection(settings.ELASIC_EMAIL_API_SERVER)
-        conn.request('POST', settings.ELASTIC_EMAIL_API_URL, data, headers) 
-        response = conn.getresponse() 
-
-        # Read the response from the mail server, close the connection, and return the result 
-        ret = response.read() 
-        conn.close() 
-        log.warn("Sent Email to %s" % (to_email))
-    except Exception, e: 
-        log.error("Error sending email to %s  message = %s" % (to_email, e))
-        raise RuntimeError(e.message)
+    ret = utils.http_utils(settings.ELASIC_EMAIL_API_SERVER, settings.ELASTIC_EMAIL_API_URL, msg_info)
 
      # Check return value 
     if re.search(settings.ELASTIC_EMAIL_SUCCESS_MATCH_PATTERN, ret): 

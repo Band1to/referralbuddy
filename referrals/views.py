@@ -28,11 +28,12 @@ from paypal.standard.ipn.models import PayPalIPN
 from postman.forms import WriteForm
 
 from referrals import models
-from referrals import utils
 
 from referrals.tasks import CalculateGifts
 
 from referrals.facebook_sdk import GraphAPI, GraphAPIError
+
+import utils
 
 import logging
 log = logging.getLogger(__name__)
@@ -568,11 +569,13 @@ def contact_us(request):
 
     raise RuntimeError("can't access")
 
-def activate_subscription(user, data, ipaddress):
+
+def create_subscription(user, data, ipaddress):
 
     subscr_date =  dateutil.parser.parse(data.get('subscr_date'))
     subscr_effective = subscr_date + timedelta(days=30)
     _dict = dict(
+            subscr_id = data.get('subscr_id'),
             business = settings.PAYPAL_ITEM_NAME,
             first_name = data.get('first_name', user.first_name),
             last_name = data.get('last_name', user.last_name),
@@ -591,8 +594,8 @@ def activate_subscription(user, data, ipaddress):
             txn_type = data.get('txn_type'),
             mc_currency = data.get('mc_currency'),
             recurring = data.get('recurring'),
-            test_ipn = data.get('test_ipn'),
-            subscr_effective = subscr_effective,
+            test_ipn = data.get('test_ipn', False),
+            subscr_effective = None,
             next_payment_date = subscr_effective,
             time_created = datetime.now(),
             ipaddress = ipaddress,
@@ -601,29 +604,84 @@ def activate_subscription(user, data, ipaddress):
     log.warn("saving subscription information for %s from IPN" % user.username)
     ipn = PayPalIPN(**_dict)
     ipn.save()
-    return ipn
+
+def activate_subscription(user, data, ipaddress):
+    subscr_date =  dateutil.parser.parse(data.get('payment_date'))
+    subscr_effective = subscr_date + timedelta(days=30)
+
+    _dict = dict(
+            subscr_id = data.get('subscr_id'),
+            business = settings.PAYPAL_ITEM_NAME,
+            first_name = data.get('first_name', user.first_name),
+            last_name = data.get('last_name', user.last_name),
+            payer_email = data.get('payer_email'),
+            payer_id = data.get('payer_id'),
+            amount1 = data.get('amount1', 0.0),
+            amount2 = data.get('amount2', 0.0),
+            amount3 = data.get('amount3', 0.0),
+            mc_amount1 = data.get('mc_amount1', 0.0),
+            mc_amount2 = data.get('mc_amount2', 0.0),
+            mc_amount3 = data.get('mc_amount3', 0.0),
+            subscr_date = subscr_date,
+            username = user.username,
+            notify_version = data.get('notify_version'),
+            receiver_email = 'info@referralbuddy.com.au',
+            txn_type = data.get('txn_type'),
+            mc_currency = data.get('mc_currency'),
+            recurring = 1,
+            test_ipn = data.get('test_ipn', False),
+            subscr_effective = None,
+            next_payment_date = subscr_effective,
+            time_created = datetime.now(),
+            ipaddress = ipaddress,
+    )
+        
+    log.warn("saving subscription information for %s from IPN" % user.username)
+    ipn = PayPalIPN(**_dict)
+    ipn.save()
+    
+
+def verify_ipn(data):
+    paypal_conn = 'www.paypal.com'
+    paypal_verify_url = 'cgi-bin/webscr'
+    return utils.http_utils(paypal_conn, paypal_verify_url, data=data, method='POST', https=True) == 'VERIFIED'
+
 
 @csrf_exempt
 def paypal_ipn(request, *args, **kwargs):
     
     try:
+        #validate that this ipn was initiated from the site
+        if request.POST.get('receiver_email') != settings.PAYPAL_RECEIVER_EMAIL:
+            log.error('Received maliscious IPN.  Possible thread!  IPN DATA = %s' % request.POST)
+
+        data = request.POST.copy()
+
+        #verify the IPN is valid
+        if not verify_ipn(data):
+            log.error('Received Invalid IPN %s' % data)
+            return HttpResponse('error')
+
         username = request.POST.get('custom')
         user = User.objects.get(username=username)
-        data = request.POST.copy()
-        log.warn(">>>>>>>>>>>>>>>> POST DATA = %s and datetime = %s" % (data, datetime.now())
+        
         #make sure the user is verified
         if data.get('payer_status') != 'verified':
             log.error('user %s is not active in paypal' % username)
-            return HttpResponseRedirect(reverse('subscription_inactive'))
+            return HttpResponse('error')
 
         if data.get('txn_type') == 'subscr_signup':
-            ipn = activate_subscription(user, data, request.session['ipaddress'])
+            log.warn('received singup IPN with data %s' % (data))
+            create_subscription(user, data, request.session['ipaddress'])
+        elif data.get('txn_type') == 'subscr_payment':
+            log.warn('received subscr_payment IPN with data %s' % (data))
+            activate_subscription(user, data, request.session['ipaddress'])
             #now email the user that their subscription is active
             from mailer import send_email as send_mail
             send_mail(template='subscription_active', subject="Your Subscription is activated", to_email=[user.email])
 
     except Exception, e:
-        log.debug(">>>>>>>> Exception occured while saving IPN %s " % (e))
+        log.warn(">>>>>>>> Exception occured while saving IPN %s " % (e))
         return HttpResponse('error')
 
     return HttpResponse('ok')

@@ -11,7 +11,7 @@ class CheckProfileMiddleware():
 
 	def process_request(self, request):
 
-		filter_urls = ('/referrals/get_plan_price/', reverse('create_profile'), reverse('auth_logout'), reverse('subscription_pending'))
+		filter_urls = ('/referrals/get_plan_price/', reverse('create_profile'), reverse('auth_logout'), reverse('subscription_pending'), reverse('subscription_inactive'))
 
 		request.session['ipaddress'] = request.META['REMOTE_ADDR']
 
@@ -25,7 +25,7 @@ class CheckProfileMiddleware():
 			#now check if this user is an organization
 			if profile.entity_type == 'org':
 				#check if they have an active subscription
-				subscription = PayPalIPN.objects.filter(username=request.user.username).order_by('-time_created')
+				subscription = PayPalIPN.objects.filter(username=request.user.username, txn_type='subscr_payment').order_by('-time_created')
 
 				if len(subscription) == 0:
 					return HttpResponseRedirect(reverse('subscription_pending'))
