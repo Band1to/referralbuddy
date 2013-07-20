@@ -25,6 +25,6 @@ urlpatterns = patterns('referrals.views',
 	url(r'^rb-paypal-return/', 'nationwide_paypal_return', name='nationwide_paypal_return'),
 	url(r'^send_message/', 'send_message', name='send_message'),
 	url(r'^contact_us/', 'contact_us', name='contact_us'),
-	(r'^rb-nwf-pp-ipn/', include('paypal.standard.ipn.urls')),
+	url(r'^rb-nwf-pp-ipn/', 'paypal_ipn', name='paypal_ipn'),
 	
 )

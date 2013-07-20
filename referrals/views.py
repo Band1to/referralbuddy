@@ -13,6 +13,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
+from django.views.decorators.csrf import csrf_exempt
 
 from social_auth.models import UserSocialAuth
 
@@ -558,3 +559,9 @@ def contact_us(request):
         
 
     raise RuntimeError("can't access")
+
+@csrf_exempt
+def paypal_ipn(request, *args, **kwargs):
+    import logging
+    log = logging.getLogger(__name__)
+    log.debug(">>>>>>>>>>>>>>>>> %s     >>>>>>>>>>>>>>> %s" % (args, **kwagrs))
