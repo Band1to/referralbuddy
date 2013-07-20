@@ -71,18 +71,18 @@ def send_new_user_email(referrer=None, referred=None, business_name=None):
     subject = 'ReferrerBuddy Referral'
     
     try:
-        template = 'new_referrer'
-        b64_email = base64.b64encode(referrer.email)
-        params = dict(merge_first_name=referrer.first_name, merge_email=referrer.email, merge_business_name=business_name, merge_site=site, merge_url=reverse('referrer_first_login', args=(b64_email,)))
-        if not referrer.is_active: send_email(template=template, subject=subject, to_email=[referrer.email], params=params)
+        template1 = 'new_referrer'
+        b64_email1 = base64.b64encode(referrer.email)
+        params1 = dict(merge_first_name=referrer.first_name, merge_email=referrer.email, merge_business_name=business_name, merge_site=site, merge_url=reverse('referrer_first_login', args=(b64_email1,)))
+        if not referrer.is_active: send_email(template=template, subject=subject, to_email=[referrer.email], params=params1)
     except Exception, e:
         log.error('exception while sending referrer email %s' % e)
 
     try:
-        template = 'new_referred'
-        b64_email = base64.b64encode(referred.email)
-        params = dict(merge_first_name=referred.first_name, merge_email=referred.email, merge_business_name=business_name, merge_site=site, merge_url=reverse('referrer_first_login', args=(b64_email,)))
-        if not referred.is_active: send_email(template=template, subject=subject, to_email=[referrer.email], params=params)
+        template2 = 'new_referred'
+        b64_email2 = base64.b64encode(referred.email)
+        params2 = dict(merge_first_name=referred.first_name, merge_email=referred.email, merge_business_name=business_name, merge_site=site, merge_url=reverse('referrer_first_login', args=(b64_email2,)))
+        if not referred.is_active: send_email(template=template, subject=subject, to_email=[referred.email], params=params2)
     except Exception, e:
         log.error('exception while sending ReferrerBuddy email %s' % e)
 
