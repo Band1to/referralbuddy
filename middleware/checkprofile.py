@@ -11,9 +11,11 @@ class CheckProfileMiddleware():
 
 	def process_request(self, request):
 
+		filter_urls = ('/referrals/get_plan_price/', reverse('create_profile'), reverse('auth_logout'), reverse('subscription_pending'))
+
 		request.session['ipaddress'] = request.META['REMOTE_ADDR']
 
-		if request.path == '/referrals/get_plan_price/' or request.path == reverse('create_profile') or request.path == reverse('auth_logout') or 'admin' in request.path: return None
+		if request.path in filter_urls or 'admin' in request.path: return None
 
 		if not request.user.is_authenticated(): return None
 		
