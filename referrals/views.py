@@ -642,10 +642,13 @@ def activate_subscription(user, data, ipaddress):
     
 
 def verify_ipn(data):
-    paypal_conn = 'www.paypal.com'
-    paypal_verify_url = 'cgi-bin/webscr'
+    # paypal_conn = 'www.paypal.com'
+    # paypal_verify_url = '/cgi-bin/webscr'
+    url = 'https://%s%s' % (paypal_conn, paypal_verify_url)
     data.update({'cmd' : '_notify-validate'})
-    return utils.http_utils(paypal_conn, paypal_verify_url, data=data, method='POST', https=True) == 'VERIFIED'
+    return urllib.urlopen(url, urllib.urlencode(args)).read() == 'VERIFIED'
+    # return utils.http_utils(paypal_conn, paypal_verify_url, data=data, method='POST', https=True) == 'VERIFIED'
+
 
 
 @csrf_exempt
