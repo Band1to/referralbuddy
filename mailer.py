@@ -7,6 +7,7 @@ from django.contrib.sites.models import Site
 from django.template import Context
 from django.core import mail
 from django.conf import settings
+from django.core.urlresolvers import reverse
 
 import utils
 
@@ -31,7 +32,7 @@ log = logging.getLogger(__file__)
 #     except ValueError, e:
 #         raise ValueError('Invalid backend argument')
 
-def send_email(template=None, subject=None, to_email=None): 
+def send_email(template=None, subject=None, to_email=None, params=None): 
 
     if template is None:
         raise RuntimeError("YOU ARE MISSING THE TEMPLATE NAME")
@@ -51,6 +52,9 @@ def send_email(template=None, subject=None, to_email=None):
     msg_info['reply_to_name'] = settings.NO_REPLY_NAME 
     msg_info['channel'] = 'Channel Name'
 
+    if params:
+        msg_info.update(params)
+
     log.warn("sending email to %s" % to_email)
 
     ret = utils.http_utils(settings.ELASIC_EMAIL_API_SERVER, settings.ELASTIC_EMAIL_API_URL, msg_info)
@@ -64,18 +68,20 @@ def send_email(template=None, subject=None, to_email=None):
 
 
 def send_new_user_email(referrer=None, referred=None, business_name=None):
-    t = get_template('new_referrer_email.html')
-
     site = Site.objects.get_current()
+    subject = 'ReferrerBuddy Referral'
+    
+    try:
+        template = 'new_referrer'
+        params = dict(first_name=referrer.first_name, email=referrer.email, business_name=business_name, site=site, url=reverse('referrer_first_login'))
+        if not referrer.is_active: send_email(template=template, subject=subject, to_email=[referrer.email], params=params)
+    except Exception, e:
+        log.error('exception while sending referrer email %s' % e)
 
-    c1 = Context(dict(user = referrer, business_name = business_name, site = site))
-    c2 = Context(dict(user = referred, business_name = business_name, site = site))
-
-    body1 = t.render(c1)
-    body2 = t.render(c2)
-
-    subject = 'Welcome to Nationwide Finance'
-
-    if not referrer.is_active: send_email(subject=subject, body=body1, to_email=[referrer.email])
-    if not referred.is_active: send_email(subject=subject, body=body2, to_email=[referred.email])
+    try:
+        template = 'new_referred'
+        params = dict(first_name=referred.first_name, email=referred.email, business_name=business_name, site=site, url=reverse('referrer_first_login'))
+        if not referred.is_active: send_email(template=template, subject=subject, to_email=[referrer.email], params=params)
+    except Exception, e:
+        log.error('exception while sending ReferrerBuddy email %s' % e)
 
