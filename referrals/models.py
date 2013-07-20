@@ -189,6 +189,8 @@ class TwitterPostMessage(models.Model):
 		verbose_name_plural = "Twitter Tweets"
 
 def paypal_ipn_return(sender, **kwargs):
-	raise RuntimeError(kwargs)
+	import logging
+	log = logging.getLogger(__name__)
+	log.debug(">>>>>>>>>>>>>>>>>>IPN RETURNED " + str(kwargs))
 
 payment_was_successful.connect(paypal_ipn_return)
