@@ -45,11 +45,13 @@ def http_utils(connection, url, data=None, method='POST', https=True):
         else:
             conn.request(method, url)
 
-        response = conn.getresponse() 
         log.warn('opening connection to %s' % url)
+        response = conn.getresponse() 
         ret = response.read() 
+        log.warn('received response %s from %s ' % (ret, url))
         conn.close()
         log.warn('closed connection to %s' % url)
+        log.warn('returned after connection closed is %s' % ret)
         return ret
     except Exception, e: 
         log.error("error opening connection to %s : message : %s" % (url, e))
