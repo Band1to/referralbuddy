@@ -264,10 +264,11 @@ def calculate_gifts_check(request):
     return HttpResponse(simplejson.dumps([dict(status = 500)]), content_type = 'application/javascript; charset=utf8')
 
 
-def referrer_first_login(request):
+def referrer_first_login(request, b64email):
     from referrals import forms
     if request.method == 'GET':
-        form = forms.FirstLoginForm()
+        email = base64.b64decode(b64email)
+        form = forms.FirstLoginForm(initial=dict(email=email))
         return render_to_response('referrer_first_login.html',
                 dict(title='First Login',form = form),
                 context_instance=RequestContext(request))
