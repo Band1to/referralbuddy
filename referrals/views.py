@@ -270,7 +270,7 @@ def referrer_first_login(request, b64email):
         email = base64.b64decode(b64email)
         u = User.objects.get(email=email)
         if u.is_active:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse('auth_login'))
         form = forms.FirstLoginForm(initial=dict(email=email))
         return render_to_response('referrer_first_login.html',
                 dict(title='First Login',form = form),
