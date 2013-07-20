@@ -182,7 +182,7 @@ LOGGING = {
         'logfile': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': '%s/rb.log' % (os.getcwd()),
+            'filename': '%s/rb.log' % ("/var/log/apache2/"),
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
