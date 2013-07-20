@@ -26,7 +26,10 @@ from django.conf import settings
 #     except ValueError, e:
 #         raise ValueError('Invalid backend argument')
 
-def send_email(subject=None, body=None, to_email=None): 
+def send_email(template=None, subject=None, to_email=None): 
+
+    if template is None:
+        raise RuntimeError("YOU ARE MISSING THE TEMPLATE NAME")
 
     # Build message structure 
     msg_info = {} 
@@ -38,7 +41,7 @@ def send_email(subject=None, body=None, to_email=None):
     msg_info['subject'] = subject 
     # msg_info['body_text'] = "html body"
     # msg_info['body_html'] = body 
-    msg_info['template'] = 'activation_email'
+    msg_info['template'] = template
     msg_info['reply_to'] = settings.NO_REPLY_EMAIL
     msg_info['reply_to_name'] = settings.NO_REPLY_NAME 
     msg_info['channel'] = 'Channel Name'

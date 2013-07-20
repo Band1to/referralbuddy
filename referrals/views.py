@@ -1,4 +1,5 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+import dateutil
 import urlparse
 import urllib2, urllib
 import base64
@@ -14,6 +15,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.sites.models import Site
+from django.template.loader import render_to_string
 
 from social_auth.models import UserSocialAuth
 
@@ -21,6 +24,7 @@ from celery.result import AsyncResult
 import twitter
 
 from paypal.standard.forms import PayPalPaymentsForm
+from paypal.standard.ipn.models import PayPalIPN
 from postman.forms import WriteForm
 
 from referrals import models
@@ -29,6 +33,9 @@ from referrals import utils
 from referrals.tasks import CalculateGifts
 
 from referrals.facebook_sdk import GraphAPI, GraphAPIError
+
+import logging
+log = logging.getLogger(__name__)
 
 
 def home(request,template='index.html'):
@@ -89,6 +96,7 @@ def create_profile(request,template='create_profile.html'):
                     notify_url = settings.PAYPAL_NOTIFY_URL,
                     return_url =  settings.PAYPAL_RETURN_URL,
                     cancel_return =  settings.PAYPAL_CANCEL_RETURN_URL,
+                    custom = request.user.username,
             )
 
         form1 = PayPalPaymentsForm(initial=paypal_dict, button_type="subscribe")
@@ -560,8 +568,72 @@ def contact_us(request):
 
     raise RuntimeError("can't access")
 
+def activate_subscription(user, data, ipaddress):
+
+    subscr_date =  dateutil.parser.parse(data.get('subscr_date'))
+    subscr_effective = subscr_date + timedelta(days=30)
+    _dict = dict(
+            business = settings.PAYPAL_ITEM_NAME,
+            first_name = data.get('first_name', user.first_name),
+            last_name = data.get('last_name', user.last_name),
+            payer_email = data.get('payer_email'),
+            payer_id = data.get('payer_id'),
+            amount1 = data.get('amount1', 0.0),
+            amount2 = data.get('amount2', 0.0),
+            amount3 = data.get('amount3', 0.0),
+            mc_amount1 = data.get('mc_amount1', 0.0),
+            mc_amount2 = data.get('mc_amount2', 0.0),
+            mc_amount3 = data.get('mc_amount3', 0.0),
+            subscr_date = subscr_date,
+            username = user.username,
+            notify_version = data.get('notify_version'),
+            receiver_email = 'info@referralbuddy.com.au',
+            txn_type = data.get('txn_type'),
+            mc_currency = data.get('mc_currency'),
+            recurring = data.get('recurring'),
+            test_ipn = data.get('test_ipn'),
+            subscr_effective = subscr_effective,
+            next_payment_date = subscr_effective,
+            time_created = datetime.now(),
+            ipaddress = ipaddress,
+    )
+        
+    log.debug("getting subscription information for %s from IPN" % user.username)
+    ipn = PayPalIPN(**_dict)
+    ipn.save()
+    return ipn
+
 @csrf_exempt
 def paypal_ipn(request, *args, **kwargs):
-    import logging
-    log = logging.getLogger(__name__)
-    log.debug(">>>>>>>>>>>>>>>>> %s     >>>>>>>>>>>>>>> %s" % (args, **kwagrs))
+    
+    try:
+        username = request.POST.get('custom')
+        user = User.objects.get(username=username)
+        data = request.POST.copy()
+        #make sure the user is verified
+        if data.get('payer_status') != 'verified':
+            log.debug('user %s is not active in paypal' % username)
+            return HttpResponseRedirect(reverse('subscription_inactive'))
+
+        if data.get('txn_type') == 'subscr_signup':
+            ipn = activate_subscription(user, data, request.session['ipaddress'])
+            #now email the user that their subscription is active
+            from mailer import send_email as send_mail
+            send_mail(template='subscription_active', subject="Your Subscription is activated", to_email=[user.email])
+
+    except Exception, e:
+        log.debug(">>>>>>>> Exception occured while saving IPN %s " % (e))
+        return HttpResponse('error')
+
+    return HttpResponse('ok')
+
+
+def subscription_inactive(request, template='message.html'):
+    return render_to_response(template,
+                              dict(title='Your Subscription Is Inactive', message='Your Subscription Is Inactive',),
+                              context_instance=RequestContext(request))
+
+def subscription_pending(request, template='message.html'):
+    return render_to_response(template,
+                              dict(title='Your Subscription Is Inactive', message="""Your Subscription Is Pending.  You Will receive an email when it is active""",),
+                              context_instance=RequestContext(request))
