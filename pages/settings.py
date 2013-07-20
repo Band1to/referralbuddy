@@ -190,26 +190,6 @@ ACCOUNT_ACTIVATION_DAYS = 7
 
 BROKER_URL = 'django://'
 
-HOSTNAME = "referralbuddy.com.au"
-
-PAYPAL_RECEIVER_EMAIL = "seller_1355087471_biz@webiken.net"
-
-PAYPAL_BUTTON_IMAGE = "https://www.sandbox.paypal.com/en_US/i/btn/btn_subscribeCC_LG.gif"
-
-PAYPAL_CC_IMAGE = "https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif"
-
-PAYPAL_ACTION_URL = "https://www.sandbox.paypal.com/cgi-bin/webscr"
-
-PAYPAL_NOTIFY_URL = "http://%s/referrals/nationwide_paypal_ipn" % HOSTNAME
-
-PAYPAL_CANCEL_RETURN_URL = "http://%s/referrals/nationwdide_paypal_cancel" % HOSTNAME
-
-PAYPAL_RETURN_URL = "http://%s/referrals/nationwide_paypal_return" % HOSTNAME
-
-PAYPAL_TEST = True
-
-PAYPAL_ITEM_NAME = "Nationwide Finance"
-
 AUTH_PROFILE_MODULE = 'referrals.EntityProfile'
 
 LOGIN_REDIRECT_URL = reverse_lazy('home')
