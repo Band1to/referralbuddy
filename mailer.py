@@ -73,14 +73,14 @@ def send_new_user_email(referrer=None, referred=None, business_name=None):
     
     try:
         template = 'new_referrer'
-        params = dict(first_name=referrer.first_name, email=referrer.email, business_name=business_name, site=site, url=reverse('referrer_first_login'))
+        params = dict(merge_first_name=referrer.first_name, merge_email=referrer.email, merge_business_name=business_name, merge_site=site, merge_url=reverse('referrer_first_login'))
         if not referrer.is_active: send_email(template=template, subject=subject, to_email=[referrer.email], params=params)
     except Exception, e:
         log.error('exception while sending referrer email %s' % e)
 
     try:
         template = 'new_referred'
-        params = dict(first_name=referred.first_name, email=referred.email, business_name=business_name, site=site, url=reverse('referrer_first_login'))
+        params = dict(merge_first_name=referred.first_name, merge_email=referred.email, merge_business_name=business_name, merge_site=site, merge_url=reverse('referrer_first_login'))
         if not referred.is_active: send_email(template=template, subject=subject, to_email=[referrer.email], params=params)
     except Exception, e:
         log.error('exception while sending ReferrerBuddy email %s' % e)
