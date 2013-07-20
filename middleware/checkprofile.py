@@ -26,11 +26,11 @@ class CheckProfileMiddleware():
 			if profile.entity_type == 'org':
 				#check if they have an active subscription
 				subscription = PayPalIPN.objects.filter(username=request.user.username).order_by('-time_created')
-				
+
 				if len(subscription) == 0:
 					return HttpResponseRedirect(reverse('subscription_pending'))
 
-				if subscription.subscr_effective > datetime.now():
+				if subscription[0].subscr_effective > datetime.now():
 					return None
 				else:
 					return HttpResponseRedirect(reverse('subscription_inactive'))
