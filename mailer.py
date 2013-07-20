@@ -8,6 +8,9 @@ from django.template import Context
 from django.core import mail
 from django.conf import settings
 
+import logging
+log = loggin.getLogger(__file__)
+
 
 # def send_email(subject=None, body=None, to_email=None, fail_silently=False):
 #     params = dict(
@@ -60,7 +63,9 @@ def send_email(template=None, subject=None, to_email=None):
         # Read the response from the mail server, close the connection, and return the result 
         ret = response.read() 
         conn.close() 
+        log.warn("Sent Email to %s" % (to_email))
     except Exception, e: 
+        log.error("Error sending email to %s  message = %s" % (to_email, e))
         raise RuntimeError(e.message)
 
      # Check return value 

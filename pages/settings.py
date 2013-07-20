@@ -182,7 +182,7 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler'
         },
         'logfile': {
-            'level':'DEBUG',
+            'level':'WARN',
             'class':'logging.handlers.RotatingFileHandler',
             'filename': '%s/logs/rb.log' % (SITE_DIR),
             'maxBytes': 50000,
@@ -203,7 +203,7 @@ LOGGING = {
         },
         '': {
             'handlers': ['console', 'logfile'],
-            'level': 'DEBUG',
+            'level': 'WARN',
         },
     }
 }

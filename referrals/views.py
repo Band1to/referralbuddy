@@ -598,7 +598,7 @@ def activate_subscription(user, data, ipaddress):
             ipaddress = ipaddress,
     )
         
-    log.debug("getting subscription information for %s from IPN" % user.username)
+    log.warn("saving subscription information for %s from IPN" % user.username)
     ipn = PayPalIPN(**_dict)
     ipn.save()
     return ipn
@@ -610,9 +610,10 @@ def paypal_ipn(request, *args, **kwargs):
         username = request.POST.get('custom')
         user = User.objects.get(username=username)
         data = request.POST.copy()
+        log.warn(">>>>>>>>>>>>>>>> POST DATA = %s and datetime = %s" % (data, datetime.now())
         #make sure the user is verified
         if data.get('payer_status') != 'verified':
-            log.debug('user %s is not active in paypal' % username)
+            log.error('user %s is not active in paypal' % username)
             return HttpResponseRedirect(reverse('subscription_inactive'))
 
         if data.get('txn_type') == 'subscr_signup':
