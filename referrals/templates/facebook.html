@@ -47,18 +47,19 @@
             FB.Event.subscribe('auth.login', function () {
                 window.location = "http://referralbuddy.webiken.net/";
             });
+            FB.Canvas.setAutoResize();
 
-        window.setTimeout(function() {
-                FB.Canvas.setAutoResize();
-            }, 250);
-};
+        // window.setTimeout(function() {
+                
+        //     }, 250);
+        };
 
-    (function() {
-        var e = document.createElement('script'); e.async = true;
-        e.src = document.location.protocol +
-                '//connect.facebook.net/en_US/all.js';
-        document.getElementById('fb-root').appendChild(e);
-    }());
+        (function() {
+            var e = document.createElement('script'); e.async = true;
+            e.src = document.location.protocol +
+                    '//connect.facebook.net/en_US/all.js';
+            document.getElementById('fb-root').appendChild(e);
+        }());
     
     </script>
 {% endblock %}
