@@ -630,7 +630,7 @@ def activate_subscription(user, data, ipaddress):
             mc_currency = data.get('mc_currency'),
             recurring = 1,
             test_ipn = data.get('test_ipn', False),
-            subscr_effective = None,
+            subscr_effective = subscr_effective,
             next_payment_date = subscr_effective,
             time_created = datetime.now(),
             ipaddress = ipaddress,
