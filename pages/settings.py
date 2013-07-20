@@ -10,6 +10,8 @@ ADMINS = (
     
 )
 
+SITE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+
 MANAGERS = ADMINS
 
 # Local time zone for this installation. Choices can be found here:
@@ -182,7 +184,7 @@ LOGGING = {
         'logfile': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': '%s/rb.log' % ("/var/log/apache2/"),
+            'filename': '%s/logs/rb.log' % (SITE_DIR),
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
