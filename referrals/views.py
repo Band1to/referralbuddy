@@ -268,6 +268,9 @@ def referrer_first_login(request, b64email):
     from referrals import forms
     if request.method == 'GET':
         email = base64.b64decode(b64email)
+        u = User.objects.get(email=email)
+        if u.is_active:
+            return HttpResponseRedirect('/')
         form = forms.FirstLoginForm(initial=dict(email=email))
         return render_to_response('referrer_first_login.html',
                 dict(title='First Login',form = form),
