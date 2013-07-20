@@ -644,6 +644,7 @@ def activate_subscription(user, data, ipaddress):
 def verify_ipn(data):
     paypal_conn = 'www.paypal.com'
     paypal_verify_url = 'cgi-bin/webscr'
+    data.update({'cmd' : '_notify-validate'})
     return utils.http_utils(paypal_conn, paypal_verify_url, data=data, method='POST', https=True) == 'VERIFIED'
 
 
