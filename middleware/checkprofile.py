@@ -25,14 +25,15 @@ class CheckProfileMiddleware():
 			#now check if this user is an organization
 			if profile.entity_type == 'org':
 				#check if they have an active subscription
-				try:
-					subscription = PayPalIPN.objects.get(username=request.user.username).order_by('-time_created')
-					if subscription.subscr_effective > datetime.now():
-						return None
-					else:
-						return HttpResponseRedirect(reverse('subscription_inactive'))
-				except PayPalIPN.DoesNotExist:
+				subscription = PayPalIPN.objects.filter(username=request.user.username).order_by('-time_created')
+				
+				if len(subscription) == 0:
 					return HttpResponseRedirect(reverse('subscription_pending'))
+
+				if subscription.subscr_effective > datetime.now():
+					return None
+				else:
+					return HttpResponseRedirect(reverse('subscription_inactive'))
 
 			return None
 		except models.EntityProfile.DoesNotExist:
