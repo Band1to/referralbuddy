@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from social_auth.models import UserSocialAuth
+from paypal.standard.ipn.signals import payment_was_successful
 
 class Country(models.Model):
 
@@ -88,7 +89,7 @@ class EntityPlan(models.Model):
 	entity_active = models.BooleanField()
 
 	def __unicode__(self):
-		return "%s %s" % (self.plan_name, self.price)
+		return "%s %s AUD" % (self.plan_name, self.price)
 
 	class Meta:
 		verbose_name_plural = "Entity Plans"
@@ -186,3 +187,8 @@ class TwitterPostMessage(models.Model):
 
 	class Meta:
 		verbose_name_plural = "Twitter Tweets"
+
+def paypal_ipn_return(sender, **kwargs):
+	raise RuntimeError(kwargs)
+
+payment_was_successful.connect(paypal_ipn_return)
