@@ -95,16 +95,16 @@ class RegistrationManager(models.Manager):
             
             
             subject = 'Welcome to ReferralBuddy'
-            message = render_to_string('registration/activation_email.txt',
             params = { 
-                    'activation_key': registration_profile.activation_key,
-                    'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
-                    'site': current_site,
-                    'site_url': 'http://%s' % current_site.domain 
+                    'merge_activation_key': registration_profile.activation_key,
+                    'merge_expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
+                    'merge_site': current_site,
+                    'merge_site_url': 'http://%s' % current_site.domain,
+                    'merge_unsubscribe': ''
                     }
             
             from mailer import send_email as send_mail
-            send_mail(template='user_singup', subject=subject, to_email=[new_user.email], params=params)
+            send_mail(template='user_signup', subject=subject, to_email=[new_user.email], params=params)
 
         return new_user
     
