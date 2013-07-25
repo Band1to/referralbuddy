@@ -258,6 +258,8 @@ ELASTIC_EMAIL_SUCCESS_MATCH_PATTERN = '^[0-9|a-f]{8}-[0-9|a-f]{4}-[0-9|a-f]{4}-[
 
 ELASTIC_EMAIL_ERROR_MATCH_PATTERN = '^Error:'
 
+DATE_INPUT_FORMATS = ('%d/%m/%Y','%Y/%m/%d')
+
 try:
     from local_settings import *
 except ImportError, e:
