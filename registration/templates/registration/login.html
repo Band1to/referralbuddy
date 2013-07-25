@@ -8,6 +8,7 @@
 	color: red;
 }
 </style>
+
 {%endblock%}
 {%block left%}
 
@@ -48,8 +49,9 @@
 </div>
 </form>
 <p>
-	<span class="loginbtn"><a href="{%url socialauth_begin 'google'%}" class="btn btn-danger">Login with Gmail</a></span>
-	<span class="loginbtn"><a href="{%url socialauth_begin 'yahoo'%}" class="btn btn-warning">Login with Yahoo</a></span>
+	<span class="loginbtn"><a href="{%url rb_password_reset %}" class="btn btn-danger">Reset Password</a></span>
+	<span class="loginbtn"><a href="{%url socialauth_begin 'google'%}" class="btn">Login with Gmail</a></span>
+	<span class="loginbtn"><a href="{%url socialauth_begin 'yahoo'%}" class="btn">Login with Yahoo</a></span>
 </p>
 
 

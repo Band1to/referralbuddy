@@ -165,3 +165,42 @@ def register(request, success_url=None,
     return render_to_response(template_name,
                               { 'form': form },
                               context_instance=context)
+
+def password_reset(request, email_template='password_reset', template_name='registration/password_reset.html'):
+
+    from django.contrib.auth.forms import PasswordResetForm
+    from django.contrib.auth.tokens import default_token_generator
+    from django.contrib.sites.models import Site
+    from django.contrib.auth.models import User
+    from django.utils.http import int_to_base36
+
+    context = RequestContext(request)
+
+    if request.method == "POST":
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            user = User.objects.get(email=form.data.get('email'))
+            uid = int_to_base36(user.id)
+            token = default_token_generator.make_token(user)
+            site = Site.objects.get_current().domain
+            
+            params = {
+                'merge_site'       : site,
+                'merge_http'       : 'https' if request.is_secure() else 'http',
+                'merge_reset_link' : reverse('django.contrib.auth.views.password_reset_confirm', kwargs=dict(uidb36=uid, token=token))
+            }
+
+            from mailer import send_email as send_mail
+            send_mail(template='password_reset', subject='Resetting Your Password', to_email=[user.email], params=params)
+
+            template_name = 'message.html'
+            return render_to_response(template_name,
+                              { 'message' : 'Please check you email for a password reset link' },
+                              context_instance=context)
+                
+    else:
+        form = PasswordResetForm()
+    
+    return render_to_response(template_name,
+                              { 'form': form },
+                              context_instance=context)
