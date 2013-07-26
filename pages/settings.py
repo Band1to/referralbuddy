@@ -261,6 +261,8 @@ ELASTIC_EMAIL_ERROR_MATCH_PATTERN = '^Error:'
 
 DATE_INPUT_FORMATS = ('%d/%m/%Y','%Y/%m/%d')
 
+POSTMAN_SHOW_USER_AS = 'get_full_name'
+
 try:
     from local_settings import *
 except ImportError, e:
