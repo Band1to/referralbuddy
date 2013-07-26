@@ -9,8 +9,7 @@ def check_profile(func):
 			profile = models.EntityProfile.objects.get(user__username=request.user.username)
 			return func(request, *args, **kwargs)
 		except Exception, e:
-			raise e
-			# return HttpResponseRedirect(reverse('create_profile'))
+			return HttpResponseRedirect(reverse('create_profile'))
 	return wrap
 
 def home(func):
