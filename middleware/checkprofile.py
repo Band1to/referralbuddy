@@ -11,6 +11,8 @@ class CheckProfileMiddleware():
 
 	def process_request(self, request):
 
+		by_pass_urls = [reverse(url) for url in ('home', 'features', '')]
+
 		filter_urls = ('/referrals/get_plan_price/', reverse('create_profile'), reverse('auth_logout'), reverse('subscription_pending'), reverse('subscription_inactive'))
 
 		request.session['ipaddress'] = request.META['REMOTE_ADDR']

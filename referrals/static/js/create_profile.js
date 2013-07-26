@@ -4,30 +4,30 @@ nationwide.utils = nationwide.utils || {};
 
 function show_errors($profile_form, json) {
 	//clear all existing errors:
-        				var $inputs = $profile_form.find("input[type=text]");
-        				var $selects = $profile_form.find("select");
+    var $inputs = $profile_form.find("input[type=text]");
+    var $selects = $profile_form.find("select");
 
-        				$.each($inputs, function() {
-        					$(this).parent().next().html('');
-        				});
+    $.each($inputs, function() {
+        $(this).parent().next().html('');
+    });
 
-        				$.each($selects, function() {
-        					$(this).parent().next().html('');
-        				});
+    $.each($selects, function() {
+        $(this).parent().next().html('');
+    });
 
-        				var errors = json.errors;
+    var errors = json.errors;
         				
-        				$.each(errors, function(key, value){
-        					var $elm = $("input[name=" + key +"]");
+    $.each(errors, function(key, value){
+        var $elm = $("input[name=" + key +"]");
         					
-        					if ($elm.length == 0) {
-        						$elm = $("select[name=" + key + "]");
-        					}
+        if ($elm.length == 0) {
+            $elm = $("select[name=" + key + "]");
+        }
         					
-        					var $div = $elm.parent().next();
-        					$div.html(value);
-        					$div.css('color', 'red');
-        				});
+        var $div = $elm.parent().next();
+        $div.html(value);
+        $div.css('color', 'red');
+    });
 }
 
 

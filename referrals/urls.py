@@ -5,8 +5,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('referrals.views',
-	url(r'^logout/$', 'logout', name='logout_user'),
-	url(r'^check_user_profile/$', 'check_user_profile', name='check_user_profile'),
 	url(r'^create-profile/$', 'create_profile', name='create_profile'),
 	url(r'^edit_profile/$', 'edit_profile', name='edit_profile'),
 	url(r'^add_referral/$', 'add_referral', name='add_referral'),
@@ -22,9 +20,7 @@ urlpatterns = patterns('referrals.views',
 	url(r'^search_referrers/', 'search_referrers', name='search_referrers'),
 	url(r'^search_organization/', 'search_organization', name='search_organization'),
 	url(r'^get_plan_price/', 'get_plan_price', name='get_plan_price'),
-	url(r'^rb-paypal-return/', 'nationwide_paypal_return', name='nationwide_paypal_return'),
 	url(r'^send_message/', 'send_message', name='send_message'),
-	url(r'^contact_us/', 'contact_us', name='contact_us'),
 	url(r'^rb-nwf-pp-ipn/', 'paypal_ipn', name='paypal_ipn'),
 	url(r'^subscription-pending', 'subscription_pending',  name='subscription_pending'),
 	url(r'^subscription-inactive', 'subscription_inactive',  name='subscription_inactive')

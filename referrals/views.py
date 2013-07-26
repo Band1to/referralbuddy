@@ -28,9 +28,9 @@ from paypal.standard.ipn.models import PayPalIPN
 from postman.forms import WriteForm
 
 from referrals import models
-
 from referrals.tasks import CalculateGifts
-
+from decorators.profile import check_profile
+from decorators.subscription import check_subscription
 from referrals.facebook_sdk import GraphAPI, GraphAPIError
 
 import utils
@@ -38,39 +38,6 @@ import utils
 import logging
 log = logging.getLogger(__name__)
 
-
-def home(request,template='index.html'):
-
-    return render_to_response(template,
-                              dict(title='Welcome to Nationwide Finance',),
-                              context_instance=RequestContext(request))
-
-
-def redirect_to_home(request):
-    return HttpResponseRedirect('/nationwide/referrals')
-
-def logout(request,template='index.html'):
-    django_logout(request)
-    return HttpResponseRedirect('/nationwide/referrals')
-
-
-def check_user_profile(request):
-    is_entity = False
-    
-    if request.user.is_authenticated:
-        
-        try:
-            profile = request.user.get_profile()
-            is_entity = True
-        except:
-            pass
-
-        if not is_entity:
-            #status = 0 means organization needs to create a profile
-            return HttpResponse(simplejson.dumps([dict(status = 0)]),content_type = 'application/javascript')
-
-        #status = 10 means organization already has a profile
-        return HttpResponse(simplejson.dumps([dict(statuc = 10)]),content_type = 'application/javascript')
 
 def get_plan_price(request):
     if request.POST.get('plan_id'):
@@ -109,6 +76,7 @@ def create_profile(request,template='create_profile.html'):
                                     title ='Creating a Profile',
                                     form  = form,
                                     form1 = form1,
+                                    editing = False,
                                 ),
                               context_instance=RequestContext(request))
 
@@ -122,10 +90,8 @@ def create_profile(request,template='create_profile.html'):
         errors = form.errors
         return HttpResponse(simplejson.dumps([dict(status = 500, errors = errors)]), content_type = 'application/javascript')
 
-def nationwide_paypal_return(request):
-    return HttpResponseRedirect('/')
-
 @login_required
+@check_profile
 def edit_profile(request, template='create_profile.html'):
     from referrals import forms
 
@@ -151,6 +117,8 @@ def edit_profile(request, template='create_profile.html'):
             return HttpResponse(simplejson.dumps([dict(status = 500)]),content_type = 'application/javascript')
 
 @login_required
+@check_profile
+@check_subscription
 def add_referral(request):
 
     from referrals import forms
@@ -244,6 +212,8 @@ def add_referral(request):
                 context_instance=RequestContext(request))
 
 @login_required
+@check_profile
+@check_subscription
 def calculate_gifts(request, template='calcluate_gifts_wait.html'):
     
     task = CalculateGifts.delay(request.user)
@@ -288,6 +258,8 @@ def referrer_first_login(request, b64email):
                 context_instance=RequestContext(request))
 
 @login_required
+@check_profile
+@check_subscription
 def view_referrers(request):
     referrals = models.EntityReferral.objects.filter(organization__email=request.user.email)
 
@@ -310,6 +282,8 @@ def view_referrers(request):
             context_instance=RequestContext(request))
 
 @login_required
+@check_profile
+@check_subscription
 def view_referred(request):
 
     referrals = models.EntityReferral.objects.filter(referrer__email=request.user.email)
@@ -342,6 +316,7 @@ def add_referral_autocomplete(request):
     return HttpResponse(simplejson.dumps([dict(status = 500)]))
 
 @login_required
+@check_profile
 def post_to_facebook(request):
     from referrals import forms
 
@@ -393,6 +368,7 @@ def post_to_facebook(request):
             context_instance=RequestContext(request))
 
 @login_required
+@check_profile
 def post_to_twitter(request):
     from referrals import forms
 
@@ -447,6 +423,8 @@ def post_to_twitter(request):
 
 
 @login_required
+@check_profile
+@check_subscription
 def search_referrers(request):
     if request.method == 'GET':
         return render_to_response('search_referrers.html',
@@ -479,6 +457,8 @@ def search_referrers(request):
             context_instance=RequestContext(request))
 
 @login_required
+@check_profile
+@check_subscription
 def search_organization(request):
     if request.method == 'GET':
         return render_to_response('search_organizations.html',
@@ -521,6 +501,8 @@ def search_organization(request):
 
 
 @login_required
+@check_profile
+@check_subscription
 def send_message(request, template='send_message.html'):
     saved = False
     org = False
@@ -551,109 +533,6 @@ def send_message(request, template='send_message.html'):
             context_instance=RequestContext(request))
 
 
-def contact_us(request):
-    if request.method == "POST":
-        from mailer import send_email
-        fullname = request.POST.get('fullname')
-        message = request.POST.get('message')
-        email = request.POST.get('email')
-
-        if not fullname or not message or not email:
-            return render_to_response('message.html',
-                        dict(title='Invalid Message', message='Please Complete All Form Field'),
-                        context_instance=RequestContext(request))
-        subject = "You have been sent a message by %s" % fullname
-        body = "Message From %s<br/><br/>%s" % (email, message)
-
-        send_email(subject=subject, body=body, to_email=[settings.ADMINS[0][1]], fail_silently=True)
-        return render_to_response('message.html',
-                        dict(title='Message Sent', message='Message Sent'),
-                        context_instance=RequestContext(request))
-        
-
-    raise RuntimeError("can't access")
-
-
-def create_subscription(user, data, ipaddress):
-
-    subscr_date =  dateutil.parser.parse(data.get('subscr_date'))
-    subscr_effective = subscr_date + timedelta(days=30)
-    _dict = dict(
-            subscr_id = data.get('subscr_id'),
-            business = settings.PAYPAL_ITEM_NAME,
-            first_name = data.get('first_name', user.first_name),
-            last_name = data.get('last_name', user.last_name),
-            payer_email = data.get('payer_email'),
-            payer_id = data.get('payer_id'),
-            amount1 = data.get('amount1', 0.0),
-            amount2 = data.get('amount2', 0.0),
-            amount3 = data.get('amount3', 0.0),
-            mc_amount1 = data.get('mc_amount1', 0.0),
-            mc_amount2 = data.get('mc_amount2', 0.0),
-            mc_amount3 = data.get('mc_amount3', 0.0),
-            subscr_date = subscr_date,
-            username = user.username,
-            notify_version = data.get('notify_version'),
-            receiver_email = 'info@referralbuddy.com.au',
-            txn_type = data.get('txn_type'),
-            mc_currency = data.get('mc_currency'),
-            recurring = data.get('recurring'),
-            test_ipn = data.get('test_ipn', False),
-            subscr_effective = None,
-            next_payment_date = subscr_effective,
-            time_created = datetime.now(),
-            ipaddress = ipaddress,
-    )
-        
-    log.warn("saving subscription information for %s from IPN" % user.username)
-    ipn = PayPalIPN(**_dict)
-    ipn.save()
-
-def activate_subscription(user, data, ipaddress):
-    subscr_date =  dateutil.parser.parse(data.get('payment_date'))
-    subscr_effective = subscr_date + timedelta(days=30)
-
-    _dict = dict(
-            subscr_id = data.get('subscr_id'),
-            business = settings.PAYPAL_ITEM_NAME,
-            first_name = data.get('first_name', user.first_name),
-            last_name = data.get('last_name', user.last_name),
-            payer_email = data.get('payer_email'),
-            payer_id = data.get('payer_id'),
-            amount1 = data.get('amount1', 0.0),
-            amount2 = data.get('amount2', 0.0),
-            amount3 = data.get('amount3', 0.0),
-            mc_amount1 = data.get('mc_amount1', 0.0),
-            mc_amount2 = data.get('mc_amount2', 0.0),
-            mc_amount3 = data.get('mc_amount3', 0.0),
-            subscr_date = subscr_date,
-            username = user.username,
-            notify_version = data.get('notify_version'),
-            receiver_email = 'info@referralbuddy.com.au',
-            txn_type = data.get('txn_type'),
-            mc_currency = data.get('mc_currency'),
-            recurring = 1,
-            test_ipn = data.get('test_ipn', False),
-            subscr_effective = subscr_effective,
-            next_payment_date = subscr_effective,
-            time_created = datetime.now(),
-            ipaddress = ipaddress,
-    )
-        
-    log.warn("saving subscription information for %s from IPN" % user.username)
-    ipn = PayPalIPN(**_dict)
-    ipn.save()
-    
-
-def verify_ipn(data):
-    url = 'https://www.paypal.com/cgi-bin/webscr'
-    data.update({'cmd' : '_notify-validate'})
-    ret = urllib.urlopen(url, urllib.urlencode(data)).read()
-    log.warn('received %s from IPN verification' % ret)
-    return ret == 'VERIFIED'
-
-
-
 @csrf_exempt
 def paypal_ipn(request, *args, **kwargs):
     
@@ -681,16 +560,15 @@ def paypal_ipn(request, *args, **kwargs):
 
         if data.get('txn_type') == 'subscr_signup':
             log.warn('received singup IPN with data %s' % (data))
-            create_subscription(user, data, request.session['ipaddress'])
+            utils.create_subscription(user, data, request.session['ipaddress'])
         elif data.get('txn_type') == 'subscr_payment':
             log.warn('received subscr_payment IPN with data %s' % (data))
-            activate_subscription(user, data, request.session['ipaddress'])
+            utils.activate_subscription(user, data, request.session['ipaddress'])
             #now email the user that their subscription is active
             from mailer import send_email as send_mail
             send_mail(template='subscription_active', subject="Your Subscription is activated", to_email=[user.email])
 
     except Exception, e:
-        log.warn(">>>>>>>> Exception occured while saving IPN %s " % (e))
         return HttpResponse('error')
 
     return HttpResponse('ok')
