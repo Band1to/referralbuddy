@@ -61,7 +61,6 @@ def create_profile(request,template='create_profile.html'):
                     sra = "0",                        # reattempt payment on payment error
                     no_note =  "1",                    # remove extra notes (optional)
                     item_name =  settings.PAYPAL_ITEM_NAME,
-                    #notify_url = settings.PAYPAL_NOTIFY_URL,
                     return_url =  settings.PAYPAL_RETURN_URL,
                     cancel_return =  settings.PAYPAL_CANCEL_RETURN_URL,
                     custom = request.user.username,
