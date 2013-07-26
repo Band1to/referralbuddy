@@ -25,9 +25,11 @@
 				<div style="display:none;">{{form.recipients}}</div>
 				<input type="text" name="business_name" value="{{org.business_name}}"/>
 				<input type="hidden" name="moderation_status" value="a"/>
+				<!--
 				<a id="org_lookup"> 
 					<img src="/static/admin/img/selector-search.gif" width="16" height="16" alt="Lookup">
 				</a>
+				-->
 			</div>
 			<div>{% if form.recipients.errors %} <span class="error">{{ form.recipients.errors|join:", " }}</span>{% endif %}</div>
 		</div>
