@@ -80,11 +80,15 @@ class CalculateGifts(Task):
 
 	def send_emails(self):
 		self.subject = 'You Have Earned A Gift'
+		self.template_name = 'gifts_notification'
+
 		for entity in self.email_list:
-			t = get_template('gifts_notification_email.html')
-			c = Context(dict(org_name=self.profile.business_name, name='%s %s' % (entity.first_name, entity.last_name)))
-			body = t.render(c)
-			send_email(subject=self.subject, body=body, to_email=[entity.email,])
+			params = dict(
+					merge_first_name = entity.first_name,
+					merge_last_name = entity.last_name,
+					merge_org_name = self.profile.business_name
+				)
+			send_email(template=self.template_name, subject=self.subject, to_email=[entity.email,], params=params)
 
 
 
