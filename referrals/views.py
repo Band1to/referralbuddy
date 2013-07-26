@@ -288,7 +288,7 @@ def view_referred(request):
     referrals = models.EntityReferral.objects.filter(referrer__email=request.user.email)
     if len(referrals) == 0:
         return render_to_response('none_referred.html',
-                dict(title='Error!',),
+                dict(title='No Referrals',),
                 context_instance=RequestContext(request))
 
     aaData = []
