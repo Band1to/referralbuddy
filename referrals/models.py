@@ -134,6 +134,8 @@ class EntityProfile(models.Model):
 	post_to_facebook = models.BooleanField(default=False)
 	post_to_twitter = models.BooleanField(default=False)
 
+	ipaddress = models.CharField(max_length=100, default=True, null=True)
+
 	created_date = models.DateTimeField()
 	updated_date = models.DateTimeField()
 	entity_active = models.BooleanField()

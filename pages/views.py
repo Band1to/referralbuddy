@@ -8,7 +8,6 @@ from decorators import profile
 
 @profile.home
 def home(request, template='index.html'):
-
     form = RegistrationForm()
     try:
         content = PageContent.objects.filter(page__page_name='home_page', is_active=True).latest('page__pub_date')

@@ -80,8 +80,9 @@ def create_profile(request,template='create_profile.html'):
                               context_instance=RequestContext(request))
 
     else:
-
-        form = forms.CreateProfileForm(user=request.user, data=request.POST)
+        data = request.POST.copy()
+        data['ipaddress'] = request.META.get('REMOTE_ADDR')
+        form = forms.CreateProfileForm(user=request.user, data=data)
         if form.is_valid():
             profile = form.save()
             return HttpResponse(simplejson.dumps([dict(status = 200)]),content_type = 'application/javascript')
@@ -542,15 +543,9 @@ def paypal_ipn(request, *args, **kwargs):
 
         data = request.POST.copy()
 
-        #TO-DO: fix IPN validation
-        
-        #verify the IPN is valid
-        # if not verify_ipn(data):
-        #     log.error('Received Invalid IPN %s' % data)
-        #     return HttpResponse('error')
-
         username = request.POST.get('custom')
         user = User.objects.get(username=username)
+        profile = user.get_profile()
         
         #make sure the user is verified
         if data.get('payer_status') != 'verified':
@@ -559,15 +554,16 @@ def paypal_ipn(request, *args, **kwargs):
 
         if data.get('txn_type') == 'subscr_signup':
             log.warn('received singup IPN with data %s' % (data))
-            utils.create_subscription(user, data, request.session['ipaddress'])
+            utils.create_subscription(user, data, profile.ipaddress)
         elif data.get('txn_type') == 'subscr_payment':
             log.warn('received subscr_payment IPN with data %s' % (data))
-            utils.activate_subscription(user, data, request.session['ipaddress'])
+            utils.activate_subscription(user, data, profile.ipaddress)
             #now email the user that their subscription is active
             from mailer import send_email as send_mail
             send_mail(template='subscription_active', subject="Your Subscription is activated", to_email=[user.email])
 
     except Exception, e:
+        log.error("Error occured in IPN %s" % e.message)
         return HttpResponse('error')
 
     return HttpResponse('ok')

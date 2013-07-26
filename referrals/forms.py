@@ -150,6 +150,9 @@ class CreateProfileForm(forms.ModelForm):
     direct_referal_value = forms.FloatField(required=False)
     indirect_referral_value = forms.FloatField(required=False)
 
+    ipaddress = forms.CharField(required=False, widget=forms.HiddenInput())
+
+
 
     suburb = forms.CharField(required=False)
 
@@ -259,7 +262,7 @@ class CreateProfileForm(forms.ModelForm):
 
     class Meta:
         model = models.EntityProfile
-        exclude = ('user','created_date', 'updated_date', 'entity_contact')
+        exclude = ('user','created_date', 'updated_date', 'entity_contact',)
 
 class FacebookPostForm(forms.ModelForm):
 

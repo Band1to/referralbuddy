@@ -162,6 +162,7 @@ INSTALLED_APPS = (
     'pages',
     'referrals',
     'registration',
+    'south',
     
 )
 
