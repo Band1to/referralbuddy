@@ -24,6 +24,6 @@ urlpatterns = patterns('referrals.views',
 	url(r'^rb-nwf-pp-ipn/', 'paypal_ipn', name='paypal_ipn'),
 	url(r'^subscription-pending', 'subscription_pending',  name='subscription_pending'),
 	url(r'^subscription-inactive', 'subscription_inactive',  name='subscription_inactive'),
-	url(r'^rb-paypal-return/', 'nationwide_paypal_return', name='nationwide_paypal_return'),
+	url(r'^rb-paypal-return/', 'rb_paypal_return', name='rb_paypal_return'),
 	
 )

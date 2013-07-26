@@ -582,3 +582,6 @@ def subscription_pending(request, template='message.html'):
     return render_to_response(template,
                               dict(title='Your Subscription Is Inactive', message="""Your Subscription Is Pending.  You Will receive an email when it is active""",),
                               context_instance=RequestContext(request))
+
+def rb_paypal_return(request, *args, **kwargs):
+    return HttpResponse(reverse('home'))
