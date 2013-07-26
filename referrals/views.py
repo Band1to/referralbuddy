@@ -585,3 +585,6 @@ def subscription_pending(request, template='message.html'):
 
 def rb_paypal_return(request, *args, **kwargs):
     return HttpResponse(reverse('home'))
+
+def rb_paypal_cancel(request, *args, **kwagrs):
+    return HttpResponse(reverse('home'))
