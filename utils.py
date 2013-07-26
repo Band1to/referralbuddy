@@ -1,5 +1,5 @@
-import dateutil, datetime
-from datetime import timedelta
+import dateutil
+from datetime import timedelta, datetime
 import urllib, urllib2
 import httplib, re
 
