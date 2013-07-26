@@ -14,23 +14,6 @@ import utils
 import logging
 log = logging.getLogger(__file__)
 
-# def send_email(subject=None, body=None, to_email=None, fail_silently=False):
-#     params = dict(
-#         subject = subject,
-#         body = body,
-#         from_email = 'info@referralbuddy.com.au',
-#         to = to_email,
-#     )
-#     try:
-#         connection = mail.get_connection(fail_silently=fail_silently)
-#         connection.open()
-#         email = mail.EmailMessage(**params)
-#         email.content_subtype = "html"
-#         email.send()
-#         connection.close()
-#     except ValueError, e:
-#         raise ValueError('Invalid backend argument')
-
 def send_email(template=None, subject=None, to_email=None, params=None): 
 
     if template is None:

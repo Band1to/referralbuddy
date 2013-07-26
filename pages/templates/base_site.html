@@ -56,31 +56,33 @@
 						<a href="{% url support %}">Support</a><!-- Begin 5 columns Item (the 'quotes for django 1.5')-->
 					</li><!-- End 5 columns Item -->
 					{%if user.is_authenticated and user.get_profile%}
-					{%if user.is_authenticated and user.get_profile.is_organization%}
-					<li>
-						<a href="#">Organization</a><!-- Begin 5 columns Item -->
-						<ul class="submenu">
-								<li><a href="{% url edit_profile %}">Edit Profile</a></li>
-								<li><a href="{% url add_referral %}">Add Referral</a></li>
-								<li><a href="{% url search_referrers %}">Search Referrers</a></li>
-								<li><a href="{% url view_referrers %}">View Referrers</a></li>
-								<li><a href="{% url calculate_gifts %}">Send Gifts</a></li>
-								<!--<li><a href="{% url send_message %}">Send Message</a></li>-->
-								<li><a href="{% url postman_inbox %}">View Inbox</a></li>
-								<li><a href="{% url postman_sent %}">View Outbox</a></li>
-								<li><a href="{% url search_organization %}">Organizations</a></li>
-						</ul>
+						{%if user.get_profile.is_organization%}
+							<li>
+								<a href="#">Organization</a><!-- Begin 5 columns Item -->
+								<ul class="submenu">
+									<li><a href="{% url edit_profile %}">Edit Profile</a></li>
+									<li><a href="{% url add_referral %}">Add Referral</a></li>
+									<li><a href="{% url search_referrers %}">Search Referrers</a></li>
+									<li><a href="{% url view_referrers %}">View Referrers</a></li>
+									<li><a href="{% url calculate_gifts %}">Send Gifts</a></li>
+									<!--<li><a href="{% url send_message %}">Send Message</a></li>-->
+									<li><a href="{% url postman_inbox %}">View Inbox</a></li>
+									<li><a href="{% url postman_sent %}">View Outbox</a></li>
+									<li><a href="{% url search_organization %}">Organizations</a></li>
+								</ul>
 
-					</li><!-- End 5 columns Item -->
-					{%endif%}
-					{%if user.is_authenticated and not user.get_profile.is_organization%}
-					<li>
-						<a href="#">Individuals</a>
-							<ul class="submenu" style="width:125px;height:30px;">
-								<li><a href="{% url view_referred %}">View Referred</a></li>
-							</ul><!-- Begin 5 columns Item -->
-					</li><!-- End 5 columns Item -->
-					{%endif%}
+							</li><!-- End 5 columns Item -->
+						{%endif%}
+						{%if not user.get_profile.is_organization%}
+							<li>
+								<a href="#">Individuals</a>
+								<ul class="submenu" style="width:125px;height:30px;">
+									<li><a href="{% url view_referred %}">View Referred</a></li>
+								</ul><!-- Begin 5 columns Item -->
+							</li><!-- End 5 columns Item -->
+						{%endif%}
+					{%else%}
+						<li><a href="{% url edit_profile %}">Edit Profile</a></li>
 					{%endif%}
 					{%if user.is_authenticated%}
 					<li style="float:right;">
