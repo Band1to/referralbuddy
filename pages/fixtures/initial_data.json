@@ -60,7 +60,7 @@
     "pk": 4,
     "fields": {
       "title" : "Privacy Policy Page",
-      "page_name": "privacy_po",
+      "page_name": "privacy",
       "pub_date" : "2013-04-19 17:51:05"
     }
   },
@@ -90,7 +90,8 @@
       "left_content" : "<div class=\"left_title\">Disclaimer left Paragraph Title Here</div><div class=\"left_paragraph\">Paragraph Here</div>",
       "right_content" : "<div class=\"right_title\">Disclaimer Right Paragraph Title Here</div><div class=\"right_paragraph\">Paragraph Here</div>",
       "is_active":"1"
-      }  },
+      }  
+  },
   {
     "model": "pages.page",
     "pk": 6,
@@ -102,11 +103,30 @@
   },
   {
     "model": "pages.pagecontent",
-    "pk":6,
+    "pk": 6,
     "fields":{
       "page":"6",
       "left_content" : "<div class=\"left_title\">Terms and Conditions left Paragraph Title Here</div><div class=\"left_paragraph\">Paragraph Here</div>",
       "right_content" : "<div class=\"right_title\">Terms and Conditions right Paragraph Title Here</div><div class=\"right_paragraph\">Paragraph Here</div>",
+      "is_active":"1"
+    }
+  },
+  {
+    "model": "pages.page",
+    "pk": 7,
+    "fields": {
+      "title" : "Packages",
+      "page_name": "packages",
+      "pub_date" : "2013-04-19 17:51:05"
+    }
+  },
+  {
+    "model": "pages.pagecontent",
+    "pk": 7,
+    "fields":{
+      "page":"7",
+      "left_content" : "<div class=\"left_title\">List you packages below</div><div class=\"left_paragraph\">List of Packages</div>",
+      "right_content" : "<div class=\"right_title\">Supplementary Paragraph</div><div class=\"right_paragraph\">Paragraph Here</div>",
       "is_active":"1"
     }  
   }

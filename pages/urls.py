@@ -11,12 +11,7 @@ urlpatterns = patterns('pages.views',
 
     ###STATIC PAGES
     url(r'^$', "home", name='home'),
-    url(r'support/$', "support", name='support'),
-    url(r'features/$', "features", name='features'),
-    url(r'privacy_policy/$', "privacy_policy", name='privacy_policy'),
-    url(r'terms_conditions/$', "terms_conditions", name='terms_conditions'),
-    url(r'disclaimer/$', "disclaimer", name='disclaimer'),
-    url(r'site_map/$', "site_map", name='site_map'),
+    url(r'pages/(?P<page_name>\w*)$', "get_page", name='pages'),
 
     ###REFERRALS
     url(r'^referrals/', include('referrals.urls')),

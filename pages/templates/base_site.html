@@ -47,13 +47,13 @@
 						<a href="{%url home%}">Home</a><!-- Begin Packages Item -->				
 					</li>
 					<li>
-						<a href="#">Packages</a><!-- Begin Packages Item -->				
+						<a href="{%url pages 'packages'%}">Packages</a><!-- Begin Packages Item -->				
 					</li><!-- End Packages Item -->
 					<li>
-						<a href="{% url features %}">Features</a><!-- Begin 5 columns Item (the 'quotes for django 1.5') -->
+						<a href="{% url pages 'features' %}">Features</a><!-- Begin 5 columns Item (the 'quotes for django 1.5') -->
 					</li><!-- End 5 columns Item -->
 					<li>
-						<a href="{% url support %}">Support</a><!-- Begin 5 columns Item (the 'quotes for django 1.5')-->
+						<a href="{% url pages 'support' %}">Support</a><!-- Begin 5 columns Item (the 'quotes for django 1.5')-->
 					</li><!-- End 5 columns Item -->
 					{%if user.is_authenticated and user.get_profile%}
 						{%if user.get_profile.is_organization%}
@@ -146,10 +146,9 @@
 			<div class="container">
 				<table border="0" bordercolor="black" style="background-color:FFFFCC" width="100%" cellpadding="3" cellspacing="3">
 					<tr>
-						<td><a href="{% url terms_conditions %}">Terms & Conditions</a></td>
-						<td><a href="{% url privacy_policy %}">Privacy Policy</a></td>
-						<td><a href="{% url disclaimer %}">Disclaimer</a></td>
-						<td><a href="{% url site_map %}">Sitemap</a></td>
+						<td><a href="{% url pages 'terms_cond' %}">Terms & Conditions</a></td>
+						<td><a href="{% url pages 'privacy' %}">Privacy Policy</a></td>
+						<td><a href="{% url pages 'disclaimer' %}">Disclaimer</a></td>
 					</tr>
 				</table>
 			</div>

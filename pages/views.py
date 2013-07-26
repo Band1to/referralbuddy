@@ -22,7 +22,21 @@ def home(request, template='index.html'):
             ),
             context_instance=RequestContext(request))
 
-def support(request, template='support.html'):
+def get_page(request, page_name, template='page.html'):
+    try:
+        content = PageContent.objects.filter(page__page_name=page_name, is_active=True).latest('page__pub_date')
+    except:
+        content = None
+
+    return shortcuts.render_to_response(template,
+            dict(
+                title = content.page.title if content else "Welcome to ReferralBuddy", 
+                content = content
+            ),
+            context_instance=RequestContext(request))
+
+
+def support(request, template='page.html'):
     try:
         content = PageContent.objects.filter(page__page_name='support', is_active=True).latest('page__pub_date')
     except:
@@ -36,7 +50,7 @@ def support(request, template='support.html'):
             context_instance=RequestContext(request))
 
 
-def features(request,template='features.html'):
+def features(request,template='page.html'):
     try:
         content = PageContent.objects.filter(page__page_name='features', is_active=True).latest('page__pub_date')
     except:
@@ -49,7 +63,7 @@ def features(request,template='features.html'):
             ),
             context_instance=RequestContext(request))
 
-def privacy_policy(request,template='privacy_policy.html'):
+def privacy_policy(request,template='page.html'):
     try:
         content = PageContent.objects.filter(page__page_name='privacy_po', is_active=True).latest('page__pub_date')
     except:
@@ -62,7 +76,7 @@ def privacy_policy(request,template='privacy_policy.html'):
             ),
             context_instance=RequestContext(request))
 
-def terms_conditions(request, template='terms_conditions.html'):
+def terms_conditions(request, template='page.html'):
     try:
         content = PageContent.objects.filter(page__page_name='terms_cond', is_active=True).latest('page__pub_date')
     except:
@@ -76,7 +90,7 @@ def terms_conditions(request, template='terms_conditions.html'):
             context_instance=RequestContext(request))
 
 
-def disclaimer(request, template='disclaimer.html'):
+def disclaimer(request, template='page.html'):
     try:
         content = PageContent.objects.filter(page__page_name='disclaimer', is_active=True).latest('page__pub_date')
     except:
@@ -89,7 +103,7 @@ def disclaimer(request, template='disclaimer.html'):
             ),
             context_instance=RequestContext(request))
 
-def site_map(request, template='site_map.html'):
+def site_map(request, template='page.html'):
     return shortcuts.render_to_response(template,
         dict(),
             context_instance=RequestContext(request))
