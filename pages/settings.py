@@ -158,11 +158,11 @@ INSTALLED_APPS = (
     'tinymce',
     'postman',
     'pagination',
+    'south',
     ###LOCAL APPS
     'pages',
     'referrals',
     'registration',
-    'south',
     
 )
 

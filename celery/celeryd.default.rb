@@ -39,4 +39,4 @@ CELERYBEAT_GROUP="celery"
 # Name of the projects settings module.
 export DJANGO_SETTINGS_MODULE="pages.settings"
 
-CELERYBEAT = "$ENV_PYTHON $CELERYD_CHDIR/manage.py celerybeat"
+CELERYBEAT="$ENV_PYTHON $CELERYD_CHDIR/manage.py celerybeat"
