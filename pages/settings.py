@@ -261,7 +261,7 @@ ELASTIC_EMAIL_ERROR_MATCH_PATTERN = '^Error:'
 
 DATE_INPUT_FORMATS = ('%d/%m/%Y','%Y/%m/%d')
 
-POSTMAN_SHOW_USER_AS = 'get_full_name'
+POSTMAN_SHOW_USER_AS = lambda u: u.get_profile().business_name
 
 try:
     from local_settings import *
