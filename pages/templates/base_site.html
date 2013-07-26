@@ -82,7 +82,9 @@
 							</li><!-- End 5 columns Item -->
 						{%endif%}
 					{%else%}
-						<li><a href="{% url edit_profile %}">Edit Profile</a></li>
+						{%if user.is_authenticated %}
+							<li><a href="{% url edit_profile %}">Edit Profile</a></li>
+						{%endif%}
 					{%endif%}
 					{%if user.is_authenticated%}
 					<li style="float:right;">
