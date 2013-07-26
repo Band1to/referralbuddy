@@ -283,7 +283,6 @@ def view_referrers(request):
 
 @login_required
 @check_profile
-@check_subscription
 def view_referred(request):
 
     referrals = models.EntityReferral.objects.filter(referrer__email=request.user.email)
