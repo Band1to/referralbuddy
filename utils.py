@@ -3,6 +3,8 @@ from datetime import timedelta
 import urllib, urllib2
 import httplib, re
 
+from django.conf import settings
+
 from referrals import models
 from paypal.standard.ipn.models import PayPalIPN
 
